@@ -1,3 +1,7 @@
+//Học cách tạo vue js app
+//Sử dụng template để render html
+//Học cách tạo và sử dụng data vô html
+//Học cách tạo hàm và sử dụng hàm, sử dụng current context (this) trong hàm
 const app = Vue.createApp({
     template: `<h1>Hello from {{teamName}} and {{ isShowName ? firstName + " " + lastName : "" }}</h1>
     <button @click="onChangeName">Change Name</button>
