@@ -8,7 +8,11 @@
     :cardsContext="settings.cardsContext"
     @onFinishGame="onGetResult"
   />
-  <result-screen v-if="statusMatch === 'result'" :timePlayed="timePlayed" />
+  <result-screen
+    v-if="statusMatch === 'result'"
+    :timePlayed="timePlayed"
+    @onPlayAgain="onPlayAgain"
+  />
 </template>
 
 <script>
@@ -17,6 +21,7 @@ import InteractScreen from "./components/InteractScreen.vue";
 
 import { shuffled } from "./utils/array.js";
 import ResultScreen from "./components/ResultScreen.vue";
+
 export default {
   name: "App",
   components: {
@@ -60,6 +65,10 @@ export default {
       this.timePlayed = new Date().getTime() - this.settings.startedAt;
       //Go to result  component
       this.statusMatch = "result";
+    },
+    onPlayAgain() {
+      this.statusMatch = "default";
+      this.timePlayed = 0;
     },
   },
 };

@@ -1,34 +1,41 @@
 <template>
   <div class="screen">
-    <h1>POKE MEMORIES</h1>
-    <h3>Select mode to start game</h3>
-    <div class="action">
-      <button @click="onStart(4)">
-        <span>2x2</span>
-        <span>very easy</span>
-      </button>
-      <button @click="onStart(16)">
-        <span>4x4</span>
-        <span>easy</span>
-      </button>
-      <button @click="onStart(36)">
-        <span>6x6</span>
-        <span>Normal</span>
-      </button>
-      <button @click="onStart(64)">
-        <span>8x8</span>
-        <span>Hard</span>
-      </button>
-      <button @click="onStart(100)">
-        <span>10x10</span>
-        <span>Insane</span>
-      </button>
+    <div class="main">
+      <p class="game-name">POKE MEMORIES</p>
+      <p class="mode-request">Select mode to start game</p>
+      <div class="mode">
+        <button class="very-easy" @click="onStart(4)">
+          <p>2x2</p>
+          <p>Very easy</p>
+        </button>
+        <button class="easy" @click="onStart(16)">
+          <p>4x4</p>
+          <p>Easy</p>
+        </button>
+        <button class="normal" @click="onStart(36)">
+          <p>6x6</p>
+          <p>Normal</p>
+        </button>
+        <button class="hard" @click="onStart(64)">
+          <p>8x8</p>
+          <p>Hard</p>
+        </button>
+        <button class="insane" @click="onStart(100)">
+          <p>10x10</p>
+          <p>Insane</p>
+        </button>
+      </div>
     </div>
+    <copy-right-screen />
   </div>
 </template>
 
 <script>
+import CopyRightScreen from "./CopyRightScreen.vue";
 export default {
+  components: {
+    CopyRightScreen,
+  },
   methods: {
     onStart(totalBlocks) {
       this.$emit("onStart", { totalBlocks: totalBlocks });
@@ -36,3 +43,73 @@ export default {
   },
 };
 </script>
+
+<style lang="css" scoped>
+.screen {
+  background: var(--dark-color);
+  height: 100%;
+  color: var(--light-color);
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.main {
+  margin: auto;
+}
+
+.game-name {
+  font-size: 3.5rem;
+}
+
+.mode-request {
+  font-size: 2rem;
+  margin-top: 16px;
+}
+
+.mode {
+  margin-top: 48px;
+}
+
+.main button {
+  font-size: 1.5rem;
+  color: var(--light-color);
+  border: 1px solid var(--light-color);
+  border-radius: 15px;
+  background: var(--dark-color);
+  width: 150px;
+  margin: 0 8px;
+  padding: 16px 0;
+  cursor: pointer;
+}
+
+button.very-easy {
+  --main-color: rgb(171, 255, 46);
+  color: var(--main-color);
+  border-color: var(--main-color);
+}
+
+button.easy {
+  --main-color: rgb(255, 255, 160);
+  color: var(--main-color);
+  border-color: var(--main-color);
+}
+
+button.normal {
+  --main-color: rgb(249, 255, 72);
+  color: var(--main-color);
+  border-color: var(--main-color);
+}
+
+button.hard {
+  --main-color: rgb(255, 165, 31);
+  color: var(--main-color);
+  border-color: var(--main-color);
+}
+
+button.insane {
+  --main-color: rgb(255, 50, 50);
+  color: var(--main-color);
+  border-color: var(--main-color);
+}
+</style>

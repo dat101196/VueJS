@@ -1,13 +1,25 @@
 <template>
   <div class="card-container">
-    <card-flip
-      v-for="(card, index) in cardsContext"
-      :key="index"
-      :ref="`card-${index}`"
-      :imgBackURL="`images/${card}.png`"
-      :card="{ index: index, value: card }"
-      @onFlip="checkRule($event)"
-    />
+    <div
+      class="card-container__inner"
+      :class="{
+        'card-qty-4': cardsContext.length == 4,
+        'card-qty-16': cardsContext.length == 16,
+        'card-qty-36': cardsContext.length == 36,
+        'card-qty-64': cardsContext.length == 64,
+        'card-qty-100': cardsContext.length == 100,
+      }"
+    >
+      <card-flip
+        v-for="(card, index) in cardsContext"
+        :key="index"
+        :ref="`card-${index}`"
+        :imgBackURL="`images/${card}.png`"
+        :card="{ index: index, value: card }"
+        :cardQtyOfRow="Math.sqrt(cardsContext.length)"
+        @onFlip="checkRule($event)"
+      />
+    </div>
   </div>
 </template>
 
@@ -74,9 +86,45 @@ export default {
 
 <style lang="css" scoped>
 .card-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--dark-color);
+  overflow: scroll;
+  padding: 32px;
+}
+
+.card-container__inner {
   margin: auto;
-  text-align: center;
-  margin-top: 32px;
-  max-width: 800px;
+  position: relative;
+}
+
+.card-container__inner.card-qty-4 {
+  width: calc(150px * 2 + 1rem * 2 + 64px);
+  height: calc(250px * 2 + 1rem * 2 + 64px);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.card-container__inner.card-qty-16 {
+  width: calc(150px * 4 + 1rem * 4 + 64px);
+  height: calc(250px * 4 + 1rem * 4 + 64px);
+}
+
+.card-container__inner.card-qty-36 {
+  width: calc(150px * 6 + 1rem * 6 + 64px);
+  height: calc(250px * 6 + 1rem * 6 + 64px);
+}
+
+.card-container__inner.card-qty-64 {
+  width: calc(150px * 8 + 1rem * 8 + 64px);
+  height: calc(250px * 8 + 1rem * 8 + 64px);
+}
+
+.card-container__inner.card-qty-100 {
+  width: calc(150px * 10 + 1rem * 10 + 64px);
+  height: calc(250px * 10 + 1rem * 10 + 64px);
 }
 </style>
