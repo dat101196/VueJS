@@ -45,8 +45,8 @@ export default {
   },
   methods: {
     checkRule(card) {
-      if (this.rules.length == 2) return false;
       this.rules.push(card);
+      if (this.rules.length > 2) return false;
       if (this.rules.length == 2 && this.rules[0].value == card.value) {
         console.log("Correct");
         //Add class disabled for card
@@ -71,11 +71,12 @@ export default {
         //Flip back after 800ms
         setTimeout(() => {
           //Close both card
-          this.$refs[`card-${this.rules[0].index}`][0].onFlipBackCard();
-          this.$refs[`card-${this.rules[1].index}`][0].onFlipBackCard();
+          this.rules.forEach((rule) => {
+            this.$refs[`card-${rule.index}`][0].onFlipBackCard();
+          });
           //Reset rules
           this.rules = [];
-        }, 800);
+        }, 650);
       } else {
         return false;
       }

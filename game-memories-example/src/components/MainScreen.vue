@@ -46,7 +46,6 @@ export default {
 
 <style lang="css" scoped>
 .screen {
-  background: var(--dark-color);
   height: 100%;
   color: var(--light-color);
   display: flex;
@@ -55,7 +54,9 @@ export default {
 }
 
 .main {
-  margin: auto;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .game-name {
