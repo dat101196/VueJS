@@ -9,4 +9,6 @@ Lesson 3: Use vue-cli to create project and demo Modal, use props, method, style
 
 Lesson 4: Use create vue-cli project and demo form binding input, select, textarea
 
+Lesson 5: Learn Vue Router
+
 game-memories-example: project mini game
