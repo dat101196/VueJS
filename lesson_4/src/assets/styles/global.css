@@ -94,7 +94,7 @@ body {
   height: 100px;
   display: flex;
   align-items: center;
-  bottom: 0;
+  top: 0;
   left: 0;
   width: 100%;
 }
@@ -128,7 +128,7 @@ body {
   align-items: flex-start;
 }
 
-.screen .container > .row:nth-child(2) {
+.screen .container>.row:nth-child(2) {
   width: 100%;
 }
 
@@ -185,7 +185,8 @@ body {
   font-size: 1rem;
 }
 
-.form-item input {
+.form-item input,
+.select-option {
   padding: 1rem;
   background-color: var(--secondary);
   width: 100%;
@@ -194,6 +195,10 @@ body {
   color: Var(--light);
   font-family: var(--font);
   font-size: 1rem;
+}
+
+.result-binding {
+  margin: 16px 0;
 }
 
 .error-text {
@@ -263,6 +268,7 @@ body {
 
 .option span:first-child {
   padding-left: 2.25rem;
+  line-height: 24px;
 }
 
 .option input {
@@ -286,11 +292,11 @@ body {
   background-color: var(--primary);
 }
 
-.block:hover input ~ .checkmark {
+.block:hover input~.checkmark {
   background-color: var(--light);
 }
 
-.block input:checked ~ .checkmark {
+.block input:checked~.checkmark {
   background-color: var(--light);
 }
 
@@ -300,11 +306,11 @@ body {
   display: none;
 }
 
-.block input:checked ~ .checkmark:after {
+.block input:checked~.checkmark:after {
   display: block;
 }
 
-.block input:checked ~ .block {
+.block input:checked~.block {
   background-color: var(--primary);
 }
 
@@ -319,9 +325,13 @@ body {
 
 .block {
   padding: 1rem;
-  cursor: pointer;
+  /* cursor: pointer; */
   background-color: var(--secondary);
   border-radius: 0.25rem;
+}
+
+.block.block--active {
+  background-color: var(--primary);
 }
 
 .section.options p {
@@ -341,5 +351,19 @@ body {
 @media (min-width: 1440px) {
   .container {
     max-width: 1360px;
+  }
+}
+
+@media (max-width: 1099px) {
+  .col-l-6 {
+    flex: 0 0 auto;
+    width: calc((100% - 2rem) / 12 * 6);
+  }
+}
+
+@media (max-width: 768px) {
+  .col-m-12 {
+    flex: 0 0 auto;
+    width: 100%;
   }
 }

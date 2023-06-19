@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row"><h1 class="title">Now, about your project...</h1></div>
       <div class="row">
-        <div class="col-7">
+        <div class="col-7 col-m-12">
           <div class="section">
             <p>
               We like being on a first-name basis, but it also helps us get in
@@ -19,6 +19,7 @@
                   placeholder="John Smith"
                   v-model="quiz.fullName"
                 />
+                <p class="result-binding">Input value: {{ quiz.fullName }}</p>
                 <p class="error-text" v-if="error.status">{{ error.text }}</p>
                 <p class="success-text" v-if="success.status">
                   {{ success.text }}
@@ -32,6 +33,7 @@
                   placeholder="skyalbert.960@gmail.com"
                   v-model="quiz.email"
                 />
+                <p class="result-binding">Input value: {{ quiz.email }}</p>
               </div>
             </div>
           </div>
@@ -40,21 +42,22 @@
               What sort of creative work do you need help with? You can read
               about our services
             </p>
+            <!-- Checkbox -->
             <div class="row">
-              <div class="col-4" v-for="option in jobOptions" :key="option.id">
+              <div
+                class="col-4 col-l-6"
+                v-for="option in jobOptions"
+                :key="option.id"
+              >
                 <div
                   class="block"
-                  :style="{
-                    backgroundColor: quiz.jobs.includes(option.id)
-                      ? 'var(--primary)'
-                      : '',
-                  }"
+                  :class="{ 'block--active': quiz.jobs.includes(option.name) }"
                 >
                   <label class="option">
                     <span>{{ option.name }}</span>
                     <input
                       type="checkbox"
-                      :value="option.id"
+                      :value="option.name"
                       v-model="quiz.jobs"
                     />
                     <span class="checkmark"></span>
@@ -62,9 +65,45 @@
                 </div>
               </div>
             </div>
+            <p class="result-binding">Selected: {{ quiz.jobs }}</p>
+
+            <!-- Radio -->
+            <div class="row">
+              <div
+                class="col-4 col-l-6"
+                v-for="option in jobOptions"
+                :key="option.id"
+              >
+                <div
+                  class="block"
+                  :class="{ 'block--active': quiz.job == option.name }"
+                >
+                  <label class="option">
+                    <span>{{ option.name }}</span>
+                    <input
+                      type="radio"
+                      :id="option.id"
+                      :value="option.name"
+                      v-model="quiz.job"
+                    />
+                    <span class="checkmark"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <p class="result-binding">Selected: {{ quiz.job }}</p>
+
+            <!-- Select -->
+            <select class="select-option" v-model="quiz.job">
+              <option value="" disabled>Please select a job</option>
+              <option v-for="opt in jobOptions" :key="opt.id" :value="opt.name">
+                {{ opt.name }}
+              </option>
+            </select>
           </div>
+          <p class="result-binding">Selected: {{ quiz.job }}</p>
         </div>
-        <div class="col-4">
+        <div class="col-4 col-m-12">
           <div class="section right">
             <p>
               Tell us what you need help with, the purpose of this project and
@@ -77,6 +116,7 @@
                 placeholder="Hey RHP Team, I’d love  to talk to you about  branding this Something AI  project we’re working..."
                 v-model="quiz.desc"
               />
+              {{ quiz.desc }}
             </div>
             <div class="form-item">
               <ul class="items">
@@ -140,10 +180,11 @@ export default {
   data() {
     return {
       quiz: {
-        fullName: "Sky Albert",
+        fullName: "Atom",
         email: "",
         desc: "",
         jobs: [],
+        job: "",
       },
       error: {
         text: "",
@@ -201,19 +242,18 @@ export default {
           text: "Look failed! Full Name should be 6-18 characters.",
           status: true,
         };
-      } else if (
-        this.quiz.fullName.length > 5 &&
-        this.quiz.fullName.length < 19
-      ) {
-        this.success = {
-          text: "Look great!",
-          status: true,
-        };
       } else {
         this.error = {
           text: "",
           status: false,
         };
+
+        if (this.quiz.fullName.length > 5 && this.quiz.fullName.length < 19) {
+          this.success = {
+            text: "Look great!",
+            status: true,
+          };
+        }
       }
     },
   },
