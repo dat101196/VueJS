@@ -15,7 +15,7 @@ const routes = [
     component: Transaction,
   },
   {
-    path: "/transaction/:isn",
+    path: "/transaction/:id",
     name: "transaction-detail-route",
     component: TransactionDetail,
   },

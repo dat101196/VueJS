@@ -1,4 +1,5 @@
 <template>
+  <!-- <h1>hello</h1> -->
   <nav-bar />
   <router-view />
 </template>
@@ -10,9 +11,15 @@ export default {
   components: {
     NavBar,
   },
+  // created() {
+  //   console.log("Created. h1: ", document.querySelector("h1"));
+  // },
+  // mounted() {
+  //   console.log("Mounted. h1: ", document.querySelector("h1"));
+  // },
 };
 </script>
-
+a
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
