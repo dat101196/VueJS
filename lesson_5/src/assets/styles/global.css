@@ -1,6 +1,7 @@
-:root{
+:root {
     --text-color: #1a1a1a;
 }
+
 .nav a {
     display: inline-block;
     text-decoration: none;
@@ -30,4 +31,9 @@
     color: var(--text-color);
     font-size: 1.2rem;
     border-bottom: 1px solid var(--text-color);
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
 }
