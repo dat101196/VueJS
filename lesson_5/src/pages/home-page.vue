@@ -16,6 +16,7 @@
   </div>
 </template>
 <script>
+//Vue 3 khi cần sử dụng cái nào thì phải import trước
 import { computed, ref, reactive } from "vue";
 export default {
   setup() {
