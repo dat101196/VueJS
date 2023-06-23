@@ -17,7 +17,7 @@
 </template>
 <script>
 //Vue 3 khi cần sử dụng cái nào thì phải import trước
-import { computed, ref, reactive } from "vue";
+import { watch, watchEffect, computed, ref, reactive } from "vue";
 export default {
   setup() {
     //ref nên sử dụng cho kiểu dữ liệu nguyên bản như string, number, boolean.
@@ -63,6 +63,21 @@ export default {
       console.log("onChangeList");
       customers[0] = "Tom";
     }
+
+    //Demo watch
+    //Dùng để theo dõi ref/reactive khi nó có thay đổi
+    watch(searchText, (newValue, prevValue) => {
+      console.log("[watch - searchText] newValue: ", newValue);
+      console.log("[watch - searchText] prevValue: ", prevValue);
+    });
+
+    //Demo watchEffect
+    //watchEffect hoạt động giống computed chỉ khác ở điểm computed có return ra 1 ref
+    watchEffect(() => {
+      if (searchText.value) {
+        console.log("[watchEffect] searchText: ", searchText.value);
+      }
+    });
 
     return {
       firstName,
