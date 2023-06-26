@@ -11,21 +11,31 @@
     <input type="text" v-model="searchText" />
     <button @click="onChangeList">Change list customers</button>
     <ul>
-      <li v-for="(cus, index) in customersFilled" :key="index">{{ cus }}</li>
+      <li v-for="(cus, index) in customersFiltered" :key="index">{{ cus }}</li>
     </ul>
+    <div v-bind="manybinds">{{ transactions }}</div>
   </div>
 </template>
 <script>
 //Vue 3 khi cần sử dụng cái nào thì phải import trước
 import { watch, watchEffect, computed, ref, reactive } from "vue";
+import useTransactions from "../uses/fetchTransactions";
 export default {
-  setup() {
+  props: {
+    theme: {
+      type: String,
+      default: "light",
+    },
+  },
+  // eslint-disable-next-line vue/no-setup-props-destructure
+  setup({ theme }, { emit }) {
+    console.log("props theme: ", theme);
+    console.log("emit: ", emit);
     //ref nên sử dụng cho kiểu dữ liệu nguyên bản như string, number, boolean.
     //value của ref kiểu dữ liệu là proxy = reactive
     //ref có set,get của chính nó => có thể gán nguyên object vô để thay đổi chính nó.
     const firstName = ref("first");
     const secondName = ref({ name: "second", id: 1 });
-
     //reactive nên sử dụng cho object, array.
     let car = reactive({
       name: "Mercedes",
@@ -51,7 +61,7 @@ export default {
     const searchText = ref("");
     let customers = reactive(["Alba", "Davie", "Dean", "Cindy", "Lia"]);
     //Khi customers hoặc searchText thay đổi giá trị thì hàm callback trong computed sẽ chạy lại
-    const customersFilled = computed(() =>
+    const customersFiltered = computed(() =>
       customers.filter((cus) =>
         //searchText thay đổi
         cus.toLowerCase().includes(searchText.value.toLowerCase())
@@ -79,6 +89,16 @@ export default {
       }
     });
 
+    const manybinds = {
+      id: "manyids",
+      class: "manyclasses",
+      style: "border: 3px solid black;",
+    };
+
+    //Demo reuse
+    const { transactions, getTrans } = useTransactions();
+    getTrans();
+
     return {
       firstName,
       secondName,
@@ -87,8 +107,10 @@ export default {
       //demo computed
       searchText,
       customers,
-      customersFilled,
+      customersFiltered,
       onChangeList,
+      manybinds,
+      transactions,
     };
   },
 };

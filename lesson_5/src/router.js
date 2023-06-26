@@ -1,11 +1,17 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "./pages/home-page";
+import HomeVueX from "./pages/home-vuex";
 import Transaction from "./pages/transaction-page";
 import TransactionDetail from "./pages/transaction-detail-page";
 import NotFoundPage from "./pages/not-found-page";
 const routes = [
   {
     path: "/",
+    name: "vuex-route",
+    component: HomeVueX,
+  },
+  {
+    path: "/home",
     name: "overview-route",
     component: Home,
   },

@@ -10,29 +10,59 @@
 </template>
 
 <script>
+// //Vue 2
+// export default {
+//   data() {
+//     return {
+//       // transaction: null,
+//     };
+//   },
+//   computed: {
+//     //Demo vuex
+//     transaction() {
+//       return this.$store.state.transaction;
+//     },
+//     numberFiltered() {
+//       return this.$store.getters.numbersFiltered;
+//     },
+//   },
+//   created() {
+//     // // Normal get data
+//     // fetch(`http://localhost:3000/transactions/${this.$route.params.id}`)
+//     //   .then(function (response) {
+//     //     return response.json();
+//     //   })
+//     //   .then((data) => {
+//     //     // console.log("this: ", this);
+//     //     //Muốn dùng this.property trong data() thì phải dùng arrow function vì arrow function ko có context => this sẽ là vue object còn anonymous function this sẽ ko tồn tại
+//     //     this.transaction = data;
+//     //     // console.log(this.transaction);
+//     //   });
+//     // // Ko dùng được
+//     // // .then(function (data) {
+//     // //   console.log("this: ", this);
+//     // //   //this undefined => Truy xuất vô this sẽ bị lỗi
+//     // //   this.transaction = data;
+//     // // });
+
+//     //use vuex to get data
+//     this.$store.dispatch("getTransaction", { id: this.$route.params.id });
+//   },
+// };
+
+//Vue 3
+import { computed } from "vue";
+import { useStore } from "vuex";
+import { useRoute } from "vue-router";
 export default {
-  data() {
+  setup() {
+    const route = useRoute();
+    const store = useStore();
+    store.dispatch("getTransaction", { id: route.params.id });
+
     return {
-      transaction: null,
+      transaction: computed(() => store.state.transaction),
     };
-  },
-  created() {
-    fetch(`http://localhost:3000/transactions/${this.$route.params.id}`)
-      .then(function (response) {
-        return response.json();
-      })
-      .then((data) => {
-        console.log("this: ", this);
-        //Muốn dùng this.property trong data() thì phải dùng arrow function vì arrow function ko có context => this sẽ là vue object còn anonymous function this sẽ ko tồn tại
-        this.transaction = data;
-        console.log(this.transaction);
-      });
-    //Ko dùng được
-    // .then(function (data) {
-    //   console.log("this: ", this);
-    //   //this undefined => Truy xuất vô this sẽ bị lỗi
-    //   this.transaction = data;
-    // });
   },
 };
 </script>
