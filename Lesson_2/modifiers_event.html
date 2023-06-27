@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue JS 3 - Lesson 2</title>
+    <style>
+        .card-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .card {
+            width: 150px;
+            background-color: antiquewhite;
+            border: 1px solid black;
+            margin: 16px;
+            padding: 32px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Keyboard event</h1>
+    <section id="body-container">
+        <div class="card-container">
+            <input type="text" @keyup.alt.enter="banphim">
+            <!-- this will fire even if Alt or Shift is also pressed -->
+            <button @click.ctrl="onClick">Click ctrl</button>
+
+            <!-- this will only fire when Ctrl and no other keys are pressed -->
+            <button @click.ctrl.exact="onClick">Click ctrl exact</button>
+
+            <!-- this will only fire when no system modifiers are pressed -->
+            <button @click.exact="onClick">Click exact</button>
+        </div>
+    </section>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        //Học các event keyboard
+        const app = Vue.createApp({
+            data() {
+                return {
+                }
+            },
+            methods: {
+                banphim(event) {
+                    console.log(event);
+                },
+                onClick(event) {
+                    console.log('onClick: ', event);
+                }
+            },
+        });
+
+        app.mount('#body-container');
+    </script>
+</body>
+
+</html>
