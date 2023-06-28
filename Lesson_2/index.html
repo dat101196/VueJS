@@ -32,6 +32,12 @@
     <h1>Learn Vue.js</h1>
     <section id="body-container">
         <div class="card-container card-products" :class="classTest">
+            <div v-for="(product, index) in products">
+                <p>Index: {{index}}</p>
+                <p v-for="(value, key, index) in product">{{index}}-{{ key }}:{{ value }} </p>
+            </div>
+        </div>
+        <div class="card-container card-products" :class="classTest">
             <!-- Binding style
                 :style="{backgroundColor: product.inCart ? 'red' : 'yellow'}
                 Nghĩa là:
@@ -54,14 +60,14 @@
         </div>
 
         <h2>Product filter with price < 30</h2>
-        <div class="card-container card-products-filter" :class="classTest">
-            <div class="card" v-for="product in productFilters" :class="{cart: product.inCart}">
-                <img class="card-thumb" v-bind:src="product.thumb" />
-                <h3>{{ product.name }}</h3>
-                <p>{{ product.price }}.000 vnđ</p>
-                <button @click="onToggleCart($event, product)">Add to cart</button>
-            </div>
-        </div>
+                <div class="card-container card-products-filter" :class="classTest">
+                    <div class="card" v-for="product in productFilters" :class="{cart: product.inCart}">
+                        <img class="card-thumb" v-bind:src="product.thumb" />
+                        <h3>{{ product.name }}</h3>
+                        <p>{{ product.price }}.000 vnđ</p>
+                        <button @click="onToggleCart($event, product)">Add to cart</button>
+                    </div>
+                </div>
     </section>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="main.js"></script>

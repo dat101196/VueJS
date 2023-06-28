@@ -7,14 +7,22 @@ const app = Vue.createApp({
     <button @click="onChangeName">Change Name</button>
     <div class="modal" v-if="isShowModal">
         <h1>Modal content</h1>
-    </div>`,
+    </div>
+    <!-- template dùng để wrap html bên trong và template chỉ vue hiểu chứ ko phải html tag => khi cần dùng v-if cho 1 nhóm UI mà ko muốn dùng thẻ html wrap thì dùng template wrap với v-if => khi v-if = true thì vue sẽ render code bên trong template chứ ko xuất hiện thẻ template -->
+    <template v-if="isShowModal">
+        <div>menu 1</div>
+        <div>menu 1</div>
+        <div>menu 1</div>
+        <div>menu 1</div>
+        <div>menu 1</div>
+    </template>`,
     data() {
         return {
             teamName: "Atom",
             firstName: "Tam",
             lastName: "Dang Anh",
             isShowName: true,
-            isShowModal: false
+            isShowModal: true
         }
     },
     methods: {
