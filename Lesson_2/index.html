@@ -7,10 +7,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vue JS 3 - Lesson 2</title>
     <style>
+        h3 {
+            margin: 0;
+        }
+
         .card-container {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
+            margin: 32px 0;
         }
 
         .card {
@@ -31,13 +36,22 @@
 <body>
     <h1>Learn Vue.js</h1>
     <section id="body-container">
-        <div class="card-container card-products" :class="classTest">
+        <div class="card-container card-products">
+            <h3>Lặp list số tùy chọn</h3>
+            <div v-for="n in 10">{{ n }}</div>
+        </div>
+
+        <div class="card-container card-products">
+            <h3>Lặp list object detail với index, key, value</h3>
             <div v-for="(product, index) in products">
                 <p>Index: {{index}}</p>
                 <p v-for="(value, key, index) in product">{{index}}-{{ key }}:{{ value }} </p>
             </div>
         </div>
+
+
         <div class="card-container card-products" :class="classTest">
+            <h3>Lặp list object detail và binding properties, class</h3>
             <!-- Binding style
                 :style="{backgroundColor: product.inCart ? 'red' : 'yellow'}
                 Nghĩa là:
@@ -52,22 +66,23 @@
                 *Uncomment dòng div bên dưới và comment dòng div ở trên (ngay dưới đoạn Binding style) để thử
             -->
             <div class="card" v-for="product in products" :class="{cart: product.inCart}">
-                <img class="card-thumb" v-bind:src="product.thumb" />
+                <img class="card-thumb" :src="product.thumb" />
                 <h3>{{ product.name }}</h3>
                 <p>{{ product.price }}.000 vnđ</p>
                 <button @click="onToggleCart($event, product)">Add to cart</button>
             </div>
         </div>
 
-        <h2>Product filter with price < 30</h2>
-                <div class="card-container card-products-filter" :class="classTest">
-                    <div class="card" v-for="product in productFilters" :class="{cart: product.inCart}">
-                        <img class="card-thumb" v-bind:src="product.thumb" />
-                        <h3>{{ product.name }}</h3>
-                        <p>{{ product.price }}.000 vnđ</p>
-                        <button @click="onToggleCart($event, product)">Add to cart</button>
-                    </div>
-                </div>
+        <div class="card-container card-products-filter" :class="classTest">
+            <h3>Lặp list object detail với biến filter dùng trong computed</h3>
+            <h3>Product filter with price < 30</h2>
+            <div class="card" v-for="product in productFilters" :class="{cart: product.inCart}">
+                <img class="card-thumb" v-bind:src="product.thumb" />
+                <h3>{{ product.name }}</h3>
+                <p>{{ product.price }}.000 vnđ</p>
+                <button @click="onToggleCart($event, product)">Add to cart</button>
+            </div>
+        </div>
     </section>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="main.js"></script>
