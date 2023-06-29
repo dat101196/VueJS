@@ -37,6 +37,8 @@
 </template>
 
 <script>
+//Pass data giữa các component trong Vue theo giao thức 1 chiều. Từ parent vô component con thông qua props
+//Các component cùng cấp muốn pass data cho nhau đều phải thông qua parent bằng cách $emit lên parent với param và parent sẽ hứng event để thay đổi data truyền vô property của component còn lại
 // import HelloWorld from "./components/HelloWorld.vue";
 import Header from "./components/MainHeader.vue";
 import SubHeader from "./components/SubHeader.vue";
