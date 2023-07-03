@@ -9,7 +9,7 @@ export default function () {
       transactions.value = await response.json();
     } catch (err) {
       error.value = err;
-      console.log(error.value);
+      //console.log(error.value);
     }
   };
 

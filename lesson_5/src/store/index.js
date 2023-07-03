@@ -43,7 +43,7 @@ const store = createStore({
         const data = await response.json();
         commit("setTransactions", data);
       } catch (err) {
-        console.log(err);
+        //console.log(err);
         commit("setError", new Error("Something went wrong!!!"));
       }
     },

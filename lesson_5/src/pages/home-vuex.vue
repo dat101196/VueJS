@@ -11,7 +11,7 @@ export default {
     };
   },
   created() {
-    console.log(this.$store.state.count);
+    //console.log(this.$store.state.count);
     this.count = this.$store.state.count;
   },
 };
