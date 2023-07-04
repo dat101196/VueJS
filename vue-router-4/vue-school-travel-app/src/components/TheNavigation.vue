@@ -1,8 +1,19 @@
 <template>
     <div id="nav">
-        <router-link to="/">Home</router-link>
-        <router-link :to="{ name: 'Brazil' }">Brazil</router-link>
-        <router-link :to="{ name: 'Hawaii' }">Hawaii</router-link>
-        <router-link :to="{ name: 'Panama' }">Panama</router-link>
+        <router-link id="logo" to="/">Vue School Travel App</router-link>
+        <router-link v-for="des in destinations" :key="des.id" :to="{ name: 'destination.show', params: { id: des.id, slug: des.slug } }">
+            {{ des.name }}
+        </router-link>
     </div>
 </template>
+
+<script>
+import sourceData from '@/data.json';
+export default {
+    data() {
+        return {
+            destinations: sourceData.destinations
+        }
+    },
+}
+</script>

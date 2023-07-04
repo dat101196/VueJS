@@ -30,12 +30,13 @@ a:visited {
 }
 .home .destinations {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
 }
 
-.home .destinations a{
+/* .home .destinations a{
   margin: 0 8px;
-}
+} */
 
 /* Navigation */
 #nav {
@@ -184,4 +185,10 @@ a {
   padding: 10px;
   border-radius: 5px;
   border:none;
+}
+
+@media (max-width:959px){
+  .destination-details{
+    flex-direction: column;
+  }
 }

@@ -10,9 +10,9 @@ const routes = [
     { path: '/', name: 'Home', component: Home },
     //Lazy loading routes
     //Sử dụng arrow function để import view => khi nào url trỏ để view nào mới load code của view tương ứng. Do ko phải import tất cả view từ đầu nên không load tất cả view khi load/reload trang
-    { path: '/brazil', name: 'Brazil', component: () =>import('@/views/Brazil.vue') },
-    { path: '/hawaii', name: 'Hawaii', component: () =>import('@/views/Hawaii.vue') },
-    { path: '/panama', name: 'Panama', component: () =>import('@/views/Panama.vue') },
+    { path: '/destination/:id/:slug', name:'destination.show', component: () =>import('@/views/DestinationShow.vue') },
+    
+
     //Normal loading routes
     //Phải import tất cả view từ đầu nên sẽ nặng và chậm hơn khi load/reload trang
     // { path: '/brazil', name: 'Brazil', component: Brazil },
