@@ -1,7 +1,8 @@
 <template>
-    <!-- Giao diện đối với trường hợp get data từ API
+    <div>
+        <!-- Giao diện đối với trường hợp get data từ API
     Cần phải v-if để check có data mới render UI -->
-    <!-- <div v-if="des">
+        <!-- <div v-if="des">
         <section class="destination">
             <h1>{{ des.name }}</h1>
             <div class="destination-details">
@@ -21,26 +22,27 @@
         </section>
     </div>
     <p v-else>Loading...</p> -->
-    <section class="destination">
-        <div class="destination-header">
-            <GoBack />
-            <h1 class="destination-header__title">{{ des.name }}</h1>
-        </div>
-        <div class="destination-details">
-            <img :src="`/images/${des.image}`" :alt="des.name">
-            <p>{{ des.description }}</p>
-        </div>
-    </section>
-    <section class="experiences">
-        <h2>Top Experiences in {{ des.name }}</h2>
-        <div class="cards">
-            <router-link v-for="exp in des.experiences" :key="exp.slug"
-                :to="{ name: 'experience.show', params: { experienceSlug: exp.slug } }">
-                <ExperienceCard :experience="exp" />
-            </router-link>
-        </div>
-        <router-view></router-view>
-    </section>
+        <section class="destination">
+            <div class="destination-header">
+                <GoBack />
+                <h1 class="destination-header__title">{{ des.name }}</h1>
+            </div>
+            <div class="destination-details">
+                <img :src="`/images/${des.image}`" :alt="des.name">
+                <p>{{ des.description }}</p>
+            </div>
+        </section>
+        <section class="experiences">
+            <h2>Top Experiences in {{ des.name }}</h2>
+            <div class="cards">
+                <router-link v-for="exp in des.experiences" :key="exp.slug"
+                    :to="{ name: 'experience.show', params: { experienceSlug: exp.slug } }">
+                    <ExperienceCard :experience="exp" />
+                </router-link>
+            </div>
+            <router-view></router-view>
+        </section>
+    </div>
 </template>
 <script setup>
 import { useRoute } from "vue-router";
