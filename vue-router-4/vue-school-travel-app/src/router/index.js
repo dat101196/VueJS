@@ -11,7 +11,7 @@ const routes = [
     {
         path: '/',
         name: 'Home',
-        component: Home
+        component: Home,
     },
     //Lazy loading routes
     //Sử dụng arrow function để import view => khi nào url trỏ để view nào mới load code của view tương ứng. Do ko phải import tất cả view từ đầu nên không load tất cả view khi load/reload trang
