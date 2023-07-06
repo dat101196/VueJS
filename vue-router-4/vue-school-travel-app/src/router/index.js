@@ -12,13 +12,28 @@ const routes = [
         path: '/',
         name: 'Home',
         component: Home,
+        //Alias cho ra kết quả tương tự dùng redirect. Khi ng ta gõ host/home thì sẽ redirect vô trang Home đã đc khai báo phía trên
+        alias: '/home',
     },
+    //Redirect path: dùng để khai báo 1 path ko tồn tại và redirect về 1 path/trang có tồn tại để tránh trường hợp hiện NotFound
+    //Đoạn khai báo dưới đẩy dùng để khi ng ta gõ host/home thì sẽ redirect vô trang Home đã đc khai báo phía trên
+    // {
+    //     path: '/home',
+    //     redirect: to => ({ name: 'Home' })
+    // },
     //Lazy loading routes
     //Sử dụng arrow function để import view => khi nào url trỏ để view nào mới load code của view tương ứng. Do ko phải import tất cả view từ đầu nên không load tất cả view khi load/reload trang
     {
         path: '/protected',
         name: 'protected',
-        component: () => import('@/views/Protected.vue'),
+        //Khi dùng nhiều router-view với named router-view thì ta cần dùng components để khai báo views/components cho từng router-views
+        components: {
+            //default là router-view ko có name
+            default: () => import('@/views/Protected.vue'),
+            //Named views. 
+            //LeftSideBar là name của router-view bên trong template của App.vue
+            LeftSideBar: () => import('@/components/LeftSideBar.vue'),
+        },
         meta: {
             requiresAuth: true,
         }
@@ -31,7 +46,14 @@ const routes = [
     {
         path: '/invoices',
         name: 'invoices',
-        component: () => import('@/views/Invoices.vue'),
+        //Khi dùng nhiều router-view với named router-view thì ta cần dùng components để khai báo views/components cho từng router-views
+        components: {
+            //default là router-view ko có name
+            default: () => import('@/views/Invoices.vue'),
+            //Named views. 
+            //LeftSideBar là name của router-view bên trong template của App.vue
+            LeftSideBar: () => import('@/components/LeftSideBar.vue'),
+        },
         meta: {
             requiresAuth: true,
         }

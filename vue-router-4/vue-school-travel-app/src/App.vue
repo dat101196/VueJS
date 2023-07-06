@@ -8,9 +8,18 @@ export default {
 <template>
   <TheNavigation />
   <div class="container">
+    <!-- Named route
+    Đây là named router-view giống với router-view bình thường có thêm name = LeftSideBar. Name "LeftSideBar" này dùng làm key để khai báo trong phần components bên router/index.js
+    -->
+    <router-view class="view left-sidebar" v-slot="{ Component, route }" name="LeftSideBar">
+      <!-- Slide transition -->
+      <!-- Fade transition -->
+      <transition :name="route.meta.transition || 'fade'" mode="out-in">
+        <component :is="Component" :key="route.path" />
+      </transition>
+    </router-view>
     <!-- Without transition -->
     <!-- <router-view :key="route.path"></router-view> -->
-
 
     <!-- 
     With transition
@@ -24,15 +33,15 @@ export default {
     -route.meta.transition là sử dụng transition cho từng route được khai báo trong property meta của route trong route/index.js
     -'moveUp' là tên transition default để trường hợp route.meta.transition null thì sẽ dùng tới. Có thể dùng moveUp,slide,fade,...
   -->
-    <router-view v-slot="{ Component, route }">
+    <router-view class="main-view" v-slot="{ Component, route }">
       <!-- Slide transition -->
       <!-- <transition :name="route.meta.transition || 'slide'" mode="out-in"> -->
 
       <!-- Move up transition -->
-      <transition :name="route.meta.transition || 'moveUp'">
+      <!-- <transition :name="route.meta.transition || 'moveUp'"> -->
 
-        <!-- Fade transition -->
-        <!-- <transition :name="route.meta.transition || 'fade'" mode="out-in"> -->
+      <!-- Fade transition -->
+      <transition :name="route.meta.transition || 'fade'" mode="out-in">
         <component :is="Component" :key="route.path" />
       </transition>
     </router-view>
@@ -53,7 +62,7 @@ export default {
 } */
 
 /*Router Transition moveUp style */
-.moveUp-enter-active {
+/* .moveUp-enter-active {
   opacity: 0;
   animation: moveIn 0.4s linear;
   animation-delay: 0.4s;
@@ -85,11 +94,11 @@ export default {
     opacity: 0;
     transform: translateY(-400px);
   }
-}
+} */
 
 
 /*Router Transition Fade style */
-/* .fade-enter-active,
+.fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.2s;
 }
@@ -97,5 +106,13 @@ export default {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
-} */
+}
+
+.left-sidebar {
+  width: 20%;
+}
+
+.main-view {
+  width: 100%;
+}
 </style>
