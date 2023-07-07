@@ -44,6 +44,23 @@ const routes = [
         component: () => import('@/views/Login.vue'),
     },
     {
+        //-Dùng regex cho param để quy định giá trị param. Vd: :id(\\d+) nghĩa là param id chỉ được phép là số, nếu khác số sẽ trả NotFound page
+        // path: '/example/:id(\\d+)',
+
+        //-Thêm dấu + sau param để có thể thêm nhiều param và khi đó param sẽ là array với số lượng /param tương ứng, PARAM PHẢI LÀ SỐ. Vd: /:id+ khi ta gõ /1/2/3 thì param id sẽ là array 3 phần tử là 1,2,3
+        // path: '/example/:id+',
+        //-Kết hợp cả 2 loại trên
+        //Nghĩa là param phải có ít nhất 1 cái và PHẢI LÀ SỐ tương tự thêm +
+        // path: '/example/:id(\\d+)+',
+
+        //-Thêm dấu * ở sau param thì có nghĩa là param là optional có thể thêm hoặc ko thêm cũng đc. Vd: /example thôi hoặc /example/1, example/1/2/3 đều được
+        // path: '/example/:id(\\d+)*',
+
+        //-Thêm dấu ? ở sau param thì có nghĩa là không được sử dụng param. Vd: chỉ cho phép /example thôi nếu /example/1, example/1/2/3 sẽ trả NotFound page
+        path: '/example/:id(\\d+)?',
+        component: () => import('@/views/Login.vue'),
+    },
+    {
         path: '/invoices',
         name: 'invoices',
         //Khi dùng nhiều router-view với named router-view thì ta cần dùng components để khai báo views/components cho từng router-views
