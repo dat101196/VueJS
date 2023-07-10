@@ -38,7 +38,7 @@ const newRestaurant = ref<IRestaurant>({});
 function addRestaurant() {
   let restaurant: IRestaurant = {
     name: newRestaurant.value.name,
-    status: RestaurantStatus.WantToTry,
+    status: newRestaurant.value.status,
     dishes: []
   }
   restaurantList.value.push(restaurant);
@@ -66,7 +66,7 @@ function addRestaurant() {
     </form>
     <ul>
       <li v-for="(restaurant, index) in restaurantList" :key="index">
-        {{ restaurant.name }}
+        {{ restaurant.name }} - {{ restaurant.status }}
       </li>
     </ul>
   </main>
