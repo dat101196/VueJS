@@ -1,0 +1,1 @@
+export const RecommendStatusList = ['Want to Try', 'Must Try', 'Recommended', 'Do Not Recommended'] as const;

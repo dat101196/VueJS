@@ -9,9 +9,9 @@ export default defineConfig({
     vue(),
   ],
   //Tùy chỉnh port
-  server: {
-    port: 3000,
-  },
+  // server: {
+  //   port: 3000,
+  // },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))

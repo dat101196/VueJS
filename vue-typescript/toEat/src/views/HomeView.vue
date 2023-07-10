@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { type RecommendStatus } from '../types'
+import { RecommendStatusList } from '../constants'
 /**
- * Restaurants
+ * Restaurant
  * 
  * Name - string
  * Address - string
@@ -9,29 +11,56 @@ import { ref } from 'vue'
  * Dishes - array of Dish objects
  */
 //Extract value of enum type
-enum RestaurantStatus {
-  Recommended = 'Recommended',
-  WantToTry = 'Want to Try',
-  MustTry = 'Must Try',
-  DoNotRecommended = 'Do Not Recommended'
-}
-const statusList = Object.values(RestaurantStatus);
-console.log('List status: ', statusList);
+// enum RecommendStatus {
+//   Recommended = 'Recommended',
+//   WantToTry = 'Want to Try',
+//   MustTry = 'Must Try',
+//   DoNotRecommended = 'Do Not Recommended'
+// }
+
+// const RecommendStatusList = Object.values(RecommendStatus);
+// console.log('List status: ', RecommendStatusList);
 //
 
 //Simple use type
-// type RestaurantStatus = 'Want to Try' | 'Must Try' | 'Recommended' | 'Do Not Recommended'
-// const statusList = ['Want to Try', 'Must Try', 'Recommended', 'Do Not Recommended']
+// type RecommendStatus = 'Want to Try' | 'Must Try' | 'Recommended' | 'Do Not Recommended'
+// const RecommendStatusList = ['Want to Try', 'Must Try', 'Recommended', 'Do Not Recommended']
 //
+
+//Extract type from constant array
+//**as const: để cho nó là readonly ko thể thay đổi
+// const RecommendStatusList = ['Want to Try', 'Must Try', 'Recommended', 'Do Not Recommended'] as const;
+// type RecommendStatus = typeof RecommendStatusList[number];
+//
+enum DietType {
+  Vegetarian = 'Vegetarian',
+  Vegan = 'Vegan',
+  GlutenFee = 'Gluten-Fee',
+  LactoseFree = 'Lactose-Free',
+  Other = 'Other',
+}
+
+const dietList = Object.values(DietType);
+console.log('List status: ', dietList);
+interface Dish {
+  name: string,
+  diet?: DietType,
+  status?: RecommendStatus
+}
 
 interface IRestaurant {
   name?: string,
-  status?: RestaurantStatus,
+  status?: RecommendStatus,
   dishes?: []
 }
 
 const restaurantList = ref<IRestaurant[]>([]);
-const newRestaurant = ref<IRestaurant>({});
+const newRestaurant = ref<IRestaurant>({
+  //Enum
+  // status: RecommendStatus.WantToTry
+  //Type
+  status: 'Want to Try'
+});
 
 
 
@@ -47,7 +76,7 @@ function addRestaurant() {
 
 <template>
   <main>
-    <!-- Crate a form that allows users to add a restaurant to list. -->
+    <!-- Create a form that allows users to add a restaurant to list. -->
     <pre>
       {{ newRestaurant }}
     </pre>
@@ -59,7 +88,7 @@ function addRestaurant() {
       <div>
         <label for="restaurant-status">Restaurant Status</label>
         <select name="restaurant-status" id="restaurant-status" v-model="newRestaurant.status">
-          <option v-for="status in statusList" :value="status" :key="status">{{ status }}</option>
+          <option v-for="status in RecommendStatusList" :value="status" :key="status">{{ status }}</option>
         </select>
       </div>
       <button type="submit">Add Restaurant</button>
