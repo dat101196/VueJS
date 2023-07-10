@@ -8,7 +8,21 @@ import { ref } from 'vue'
  * Status - string (e.g, "Wan to Try" | "Must  Try")
  * Dishes - array of Dish objects
  */
-type RestaurantStatus = 'Want to Try' | 'Must Try' | 'Recommended' | 'Do Not Recommended'
+//Extract value of enum type
+enum RestaurantStatus {
+  Recommended = 'Recommended',
+  WantToTry = 'Want to Try',
+  MustTry = 'Must Try',
+  DoNotRecommended = 'Do Not Recommended'
+}
+const statusList = Object.values(RestaurantStatus);
+console.log('List status: ', statusList);
+//
+
+//Simple use type
+// type RestaurantStatus = 'Want to Try' | 'Must Try' | 'Recommended' | 'Do Not Recommended'
+// const statusList = ['Want to Try', 'Must Try', 'Recommended', 'Do Not Recommended']
+//
 
 interface IRestaurant {
   name?: string,
@@ -19,13 +33,12 @@ interface IRestaurant {
 const restaurantList = ref<IRestaurant[]>([]);
 const newRestaurant = ref<IRestaurant>({});
 
-//Extract value of enum type
-const statusList = ['Want to Try', 'Must Try', 'Recommended', 'Do Not Recommended']
-//
+
+
 function addRestaurant() {
   let restaurant: IRestaurant = {
     name: newRestaurant.value.name,
-    status: 'Want to Try',
+    status: RestaurantStatus.WantToTry,
     dishes: []
   }
   restaurantList.value.push(restaurant);
@@ -52,7 +65,7 @@ function addRestaurant() {
       <button type="submit">Add Restaurant</button>
     </form>
     <ul>
-      <li v-for="(restaurant,index) in restaurantList" :key="index">
+      <li v-for="(restaurant, index) in restaurantList" :key="index">
         {{ restaurant.name }}
       </li>
     </ul>
