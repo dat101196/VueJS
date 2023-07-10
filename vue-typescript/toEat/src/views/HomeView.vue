@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { type RecommendStatus } from '../types'
+//import type and status list external
+import type { RecommendStatus, IDish } from '../types'
 import { RecommendStatusList } from '../constants'
 /**
  * Restaurant
@@ -32,26 +33,11 @@ import { RecommendStatusList } from '../constants'
 // const RecommendStatusList = ['Want to Try', 'Must Try', 'Recommended', 'Do Not Recommended'] as const;
 // type RecommendStatus = typeof RecommendStatusList[number];
 //
-enum DietType {
-  Vegetarian = 'Vegetarian',
-  Vegan = 'Vegan',
-  GlutenFee = 'Gluten-Fee',
-  LactoseFree = 'Lactose-Free',
-  Other = 'Other',
-}
-
-const dietList = Object.values(DietType);
-console.log('List status: ', dietList);
-interface Dish {
-  name: string,
-  diet?: DietType,
-  status?: RecommendStatus
-}
 
 interface IRestaurant {
   name?: string,
   status?: RecommendStatus,
-  dishes?: []
+  dishes?: IDish[]
 }
 
 const restaurantList = ref<IRestaurant[]>([]);
