@@ -3,6 +3,18 @@ import { ref } from 'vue'
 //import type and status list external
 import type { RecommendStatus, IDish } from '../types'
 import { RecommendStatusList } from '../constants'
+//Pinia
+import { storeToRefs } from 'pinia'
+import { useCounterStore } from '../stores/counter'
+
+//Chỉ có thể destructuring hàm vì counter được bọc bởi reactive nếu destructuring thì sẽ bị mất khả năng reactive như props trong setup
+const counter = useCounterStore();
+
+//Nếu muốn destructuring thì ta phải change biến của counter(store) thành ref theo cách dưới đây
+//Cách dùng Pinia destructuring
+const { count, doubleCount } = storeToRefs(counter);
+const { increment } = counter;
+//
 /**
  * Restaurant
  * 
@@ -84,5 +96,14 @@ function addRestaurant() {
         {{ restaurant.name }} - {{ restaurant.status }}
       </li>
     </ul>
+    <!-- Cách dùng Pinia ko destructuring -->
+    <!-- <p>Count: {{ counter.count }}</p>
+    <p>Double: {{ counter.doubleCount }}</p>
+    <button @click="counter.increment">Increment</button> -->
+
+    <!-- Cách dùng Pinia destructuring -->
+    <p>Count: {{ count }}</p>
+    <p>Double: {{ doubleCount }}</p>
+    <button @click="increment">Increment</button>
   </main>
 </template>
