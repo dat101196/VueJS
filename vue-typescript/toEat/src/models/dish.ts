@@ -1,4 +1,4 @@
-import { RecommendStatusList, DietTypeList } from './constants'
+import { RecommendStatusList, DietTypeList } from '@/constants'
 export type RecommendStatus = typeof RecommendStatusList[number];
 export type DietType = typeof DietTypeList[number];
 
