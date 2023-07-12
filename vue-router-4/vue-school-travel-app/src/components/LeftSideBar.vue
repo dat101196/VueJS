@@ -1,13 +1,19 @@
 <template>
     <ul>
         <li>
-            <router-link :to="{ name: 'protected' }">Dashboard</router-link>
+            <router-link :class="{selected: store.selectedMenu == 'protected'}" :to="{ name: 'protected' }">Dashboard</router-link>
         </li>
         <li>
-            <router-link :to="{ name: 'invoices' }">Invoices</router-link>
+            <router-link :class="{selected: store.selectedMenu == 'invoices'}" :to="{ name: 'invoices' }">Invoices</router-link>
         </li>
     </ul>
 </template>
+
+<script setup>
+import {useMenu} from '@/stores/menu'
+
+const store = useMenu();
+</script>
 
 <style scoped>
 ul {
@@ -19,5 +25,9 @@ ul {
 
 li {
     margin: 10px;
+}
+
+.selected{
+    color: red;
 }
 </style>

@@ -11,6 +11,14 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useMenu } from '@/stores/menu'
+//
+const store = useMenu();
+console.log('bf: ', store.selectedMenu);
+store.onSetSelectedMenu('protected');
+
+console.log('aft: ', store.selectedMenu);
+//
 const router = useRouter();
 const username = ref(window.user);
 const logout = () => {

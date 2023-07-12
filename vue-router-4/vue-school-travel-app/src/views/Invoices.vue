@@ -5,7 +5,12 @@
 </template>
 
 <script setup>
+import {useMenu} from '@/stores/menu'
 import { onBeforeRouteLeave } from 'vue-router'
+//
+const store = useMenu();
+store.onSetSelectedMenu('invoices');
+//
 onBeforeRouteLeave((to, from) => {
     const answer = window.confirm('Are you sure you want to leave? Invoices are super awesome!');
     if (!answer) return false;
