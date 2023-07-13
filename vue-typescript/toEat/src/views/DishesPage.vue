@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 //import type and status list external
 import type { IDish } from '@/models/dish'
 import { RecommendStatusList, DietTypeList } from '@/constants'
@@ -46,19 +46,19 @@ const emit = defineEmits<{
   addDishToRestaurant: [dish: IDish]
 }>()
 
-const dishesList = ref<IDish[]>(props.restaurant.dishes ?? []);
 const newDish = ref<IDish>({
   status: 'Want to Try'
 });
 
-function addDish() {
-  let dish: IDish = {
-    name: newDish.value.name,
-    diet: newDish.value.diet,
-    status: newDish.value.status,
+const isDisableAdd = computed(() => {
+  if (!newDish.value.name || !newDish.value.diet) {
+    return true
   }
-  dishesList.value.push(dish);
-  emit('addDishToRestaurant', dish);
+  return false
+})
+
+function addDish() {
+  emit('addDishToRestaurant', { ...newDish.value });
 }
 </script>
 
@@ -67,9 +67,11 @@ function addDish() {
     <div class="dish-form">
       <h3>New dish info</h3>
       <!-- Create a form that allows users to add a dish to list. -->
-      <pre>
-      {{ newDish }}
-    </pre>
+      <div class="dish-info">
+        <p>Name: {{ newDish.name }}</p>
+        <p>Status: {{ newDish.status }}</p>
+      </div>
+      <h3>Add new dish form</h3>
       <form @submit.prevent="addDish">
         <div>
           <label for="dish-name">Dish Name</label>
@@ -87,21 +89,37 @@ function addDish() {
             <option v-for="status in RecommendStatusList" :value="status" :key="status">{{ status }}</option>
           </select>
         </div>
-        <button type="submit">Add Dish</button>
+        <button class="btn" :class="{ 'btn-primary': !isDisableAdd, 'btn-disabled': isDisableAdd }" type="submit">Add
+          Dish</button>
       </form>
       <h3>Dishes of Restaurant ID: {{ props.restaurant.id }}</h3>
       <ul>
-        <li v-for="(dish, index) in dishesList" :key="index">
+        <li v-for="(dish, index) in props.restaurant.dishes" :key="index">
           {{ dish.name }} - {{ dish.diet }} - {{ dish.status }}
         </li>
       </ul>
-      <p v-if="dishesList.length === 0">Nothing to show here</p>
+      <p v-if="props.restaurant.dishes?.length === 0">Nothing to show here</p>
     </div>
   </main>
 </template>
 <style>
+.dish-info {
+  margin: 0 0 10px 16px;
+  position: relative;
+  padding-bottom: 8px;
+}
+
+.dish-info::after {
+  content: "";
+  border-bottom: 1px solid var(--vt-c-white-soft);
+  position: absolute;
+  top: 100%;
+  left: -16px;
+  right: 0;
+}
+
 .dish-form {
-  border: 1px solid gray;
+  border: 1px solid var(--vt-c-white-soft);
   padding: 10px;
   margin: 10px 0;
 }
@@ -109,5 +127,6 @@ function addDish() {
 .dish-form input,
 .dish-form select {
   width: 100%;
+  margin-bottom: 8px;
 }
 </style>

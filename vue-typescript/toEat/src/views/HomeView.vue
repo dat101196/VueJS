@@ -1,22 +1,22 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import DishesPage from './DishesPage.vue'
 //import type and status list external
 import type { IRestaurant } from '@/models/restaurant'
 import { RecommendStatusList } from '@/constants'
-//Pinia
-import { storeToRefs } from 'pinia'
-import { useCounterStore } from '@/stores/counter'
 import type { IDish } from '@/models/dish'
-
+//Pinia
+// import { storeToRefs } from 'pinia'
+// import { useCounterStore } from '@/stores/counter'
 //Chỉ có thể destructuring hàm vì counter được bọc bởi reactive nếu destructuring thì sẽ bị mất khả năng reactive như props trong setup
-const counter = useCounterStore();
+// const counter = useCounterStore();
 
 //Nếu muốn destructuring thì ta phải change biến của counter(store) thành ref theo cách dưới đây
 //Cách dùng Pinia destructuring
-const { count, doubleCount } = storeToRefs(counter);
-const { increment } = counter;
+// const { count, doubleCount } = storeToRefs(counter);
+// const { increment } = counter;
 //
+
 /**
  * Restaurant
  * 
@@ -51,12 +51,13 @@ const { increment } = counter;
 
 
 const restaurantList = ref<IRestaurant[]>([]);
-const newRestaurant = ref<IRestaurant>({
+let newRestaurant = ref<IRestaurant>({
   id: restaurantList.value.length + 1,
   //Enum
   // status: RecommendStatus.WantToTry
   //Type
-  status: 'Want to Try'
+  status: 'Want to Try',
+  dishes: []
 });
 
 function addRestaurant() {
@@ -65,27 +66,64 @@ function addRestaurant() {
   }
   console.log('[addRestaurant] restaurant: ', restaurant)
   restaurantList.value.push(restaurant)
+  newRestaurant = ref<IRestaurant>({
+    id: restaurantList.value.length + 1,
+    //Enum
+    // status: RecommendStatus.WantToTry
+    //Type
+    status: 'Want to Try',
+    dishes: []
+  });
 }
 
 const addDish = (dish: IDish) => {
+  console.log('[addDish] dish: ', dish)
+  console.log('[addDish] restaurant dishes bf: ', newRestaurant.value.dishes)
+  if (!newRestaurant.value.dishes) {
+    newRestaurant.value.dishes = [];
+  }
   newRestaurant.value.dishes?.push(dish)
-    console.log('[addDish] newRestaurant: ', newRestaurant.value)
-    console.log('[addDish] newRestaurant: ', newRestaurant.value.dishes)
+  console.log('[addDish] newRestaurant: ', newRestaurant.value)
+  console.log('[addDish] restaurant dishes aft: ', newRestaurant.value.dishes)
 }
 
+const isDisableAdd = computed(() => {
+  if (!newRestaurant.value.name ||
+    newRestaurant.value.name.length === 0 ||
+    newRestaurant.value.dishes.length === 0) {
+    return true;
+  }
+  return false;
+})
 // const dishesList = ref<IDish[]>(props.restaurant.dishes ?? []);
 </script>
 
 <template>
+  <div class="notes">
+    <div>
+      <span class="notes__color notes__color--must-try"></span>
+      Must Try
+    </div>
+    <div>
+      <span class="notes__color notes__color--want-to-try"></span>
+      Want To Try
+    </div>
+    <div>
+      <span class="notes__color notes__color--recommended"></span>
+      Recommended
+    </div>
+  </div>
   <div class="main-view">
     <div class="restaurant-form">
       <h2>Restaurant</h2>
-      <h3>Info</h3>
+      <h3>New restaurant info</h3>
       <!-- Create a form that allows users to add a restaurant to list. -->
-      <pre>
-      {{ newRestaurant }}
-    </pre>
-      <h3>Edit form</h3>
+      <div class="restaurant-info">
+        <p>ID: {{ newRestaurant.id }}</p>
+        <p>Name: {{ newRestaurant.name }}</p>
+        <p>Status: {{ newRestaurant.status }}</p>
+      </div>
+      <h3>Add new restaurant form</h3>
       <form @submit.prevent="addRestaurant">
         <div>
           <label for="restaurant-name">Restaurant Name</label>
@@ -98,19 +136,31 @@ const addDish = (dish: IDish) => {
           </select>
         </div>
         <DishesPage :restaurant="newRestaurant" @addDishToRestaurant="addDish" />
-        <button type="submit">Add Restaurant</button>
+        <button class="btn"
+          :class="{ 'btn-primary': newRestaurant.name && newRestaurant.dishes.length > 0, 'btn-disabled': isDisableAdd }"
+          :disabled="isDisableAdd" type="submit">Add Restaurant</button>
       </form>
 
     </div>
 
-    <ul>
-      <li v-for="(restaurant, index) in restaurantList" :key="index">
-        {{ restaurant.name }} - {{ restaurant.status }}
-        <pre>
-          {{ restaurant.dishes?.length }}
-        </pre>
+    <ul style="margin: 10px 0;flex: 1;">
+      <li class="restaurant" v-for="(restaurant, index) in restaurantList" :key="index">
+        <p class="restaurant__name">{{ restaurant.name }}</p>
+        <p class="restaurant__status"
+          :class="{ 'want-to-try': restaurant.status === 'Want to Try', 'must-try': restaurant.status === 'Must Try', 'recommended': restaurant.status === 'Recommended' }">
+          {{ restaurant.status }}</p>
+        <p>Dishes</p>
+        <ul>
+          <li v-for="(dish, index) in restaurant.dishes" :key="index">
+            <span class="dish-name"
+              :class="{ 'want-to-try': dish.status === 'Want to Try', 'must-try': dish.status === 'Must Try', 'recommended': dish.status === 'Recommended' }">{{
+                dish.name }}</span>
+            - {{ dish.diet }}
+          </li>
+        </ul>
       </li>
     </ul>
+    <!-- Pinia -->
     <!-- Cách dùng Pinia ko destructuring -->
     <!-- <p>Count: {{ counter.count }}</p>
     <p>Double: {{ counter.doubleCount }}</p>
@@ -126,17 +176,91 @@ const addDish = (dish: IDish) => {
 <style scoped>
 .main-view {
   display: flex;
+  justify-content: space-between;
+}
+
+.restaurant-info {
+  margin: 0 0 10px 16px;
+  position: relative;
+  padding-bottom: 8px;
+}
+
+.restaurant-info::after {
+  content: "";
+  border-bottom: 1px solid gray;
+  position: absolute;
+  top: 100%;
+  left: -16px;
+  right: 0;
 }
 
 .restaurant-form {
-  border: 1px solid gray;
+  border: 1px solid var(--vt-c-white-soft);
   display: inline-block;
   padding: 10px;
   margin: 10px;
+  flex: 1;
 }
 
 .restaurant-form input,
 .restaurant-form select {
   width: 100%;
+  margin-bottom: 8px;
+}
+
+.restaurant {
+  list-style-type: none;
+  border: 1px solid var(--vt-c-white-soft);
+  padding: 10px;
+}
+
+.restaurant__name {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.restaurant__status {
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
+.notes__color {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+}
+
+.notes {
+  display: flex;
+  justify-content: space-between;
+  width: 50%;
+}
+
+.notes__color--must-try {
+  background-color: var(--rc-must-try-color);
+}
+
+.notes__color--want-to-try {
+  background-color: var(--rc-want-to-try-color)
+}
+
+.notes__color--recommended {
+  background-color: var(--rc-recommended-color)
+}
+
+.must-try {
+  color: var(--rc-must-try-color);
+}
+
+.want-to-try {
+  color: var(--rc-want-to-try-color)
+}
+
+.recommended {
+  color: var(--rc-recommended-color)
+}
+
+.dish-name {
+  text-transform: capitalize;
 }
 </style>
