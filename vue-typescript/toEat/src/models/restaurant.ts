@@ -3,5 +3,5 @@ export interface IRestaurant {
     id: number,
     name?: string,
     status?: RecommendStatus,
-    dishes?: IDish[]
+    dishes: IDish[]
 }

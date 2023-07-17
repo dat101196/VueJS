@@ -19,6 +19,11 @@
   --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
   --vt-c-text-dark-1: var(--vt-c-white);
   --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
+
+  /* Recommend status color */
+  --rc-must-try-color: rgb(0, 255, 0);
+  --rc-want-to-try-color: rgb(188, 255, 0);
+  --rc-recommended-color: rgb(230, 255, 0);
 }
 
 /* semantic color variables for this project */
@@ -31,7 +36,7 @@
   --color-border-hover: var(--vt-c-divider-light-1);
 
   --color-heading: var(--vt-c-text-light-1);
-  --color-text: var(--vt-c-text-light-1);
+  --color-text: var(--vt-c-white-soft);
 
   --section-gap: 160px;
 }
@@ -46,7 +51,7 @@
     --color-border-hover: var(--vt-c-divider-dark-1);
 
     --color-heading: var(--vt-c-text-dark-1);
-    --color-text: var(--vt-c-text-dark-2);
+    --color-text: var(--vt-c-white-soft);
   }
 }
 

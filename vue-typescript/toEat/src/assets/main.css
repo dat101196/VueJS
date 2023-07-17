@@ -1,5 +1,49 @@
 @import './base.css';
 
+:root {
+  --bg-button-primary: #1561f2;
+  --bg-button-disabled: #fdfdfd;
+}
+
+.btn {
+  cursor: pointer;
+  background: transparent;
+  color: var(--color-text);
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid var(--vt-c-white-soft);
+}
+
+.btn:hover{
+  opacity: 0.8;
+}
+
+.btn-primary {
+  background: var(--bg-button-primary);
+}
+
+.btn-disabled {
+  color: var(--vt-c-text-light-2);
+  background: var(--bg-button-disabled);
+  cursor: default;
+}
+
+.btn.btn-disabled:hover{
+  opacity: 1;
+}
+
+input, select{
+  background: transparent;
+  border: 1px solid var(--vt-c-white-soft);
+  color: var(--vt-c-white-soft);
+  padding: 8px 4px;
+  border-radius: 5px;
+}
+
+option{
+  background-color: black;
+}
+
 #app {
   max-width: 1280px;
   margin: 0 auto;
