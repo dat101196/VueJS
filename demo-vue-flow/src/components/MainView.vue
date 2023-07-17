@@ -25,6 +25,7 @@ onNodeDragStop(({ event, node, nodes }) => {
     //console.log('node: ', nodes[0])
     //console.log('all rect: ', getRectOfNodes(getNodes.value))
     getNodes.value.forEach((n) => {
+        console.log('n: ', n)
         if (n === node) {
             console.log('this node')
         } 
