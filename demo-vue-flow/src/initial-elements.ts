@@ -3,7 +3,7 @@ export const initialElements = [
   { id: '2', label: 'Node 2', position: { x: 400, y: 400 } },
   { id: '3', label: 'Node 3', position: { x: 400, y: 0 } },
   { id: '4', label: 'Node 4', position: { x: 0, y: 400 } },
-  { id: '5', style: { borderColor: 'red' }, label: 'Drag me over another node', position: { x: 200, y: 200 } },
+  { id: '5', class: 'borderRect', label: 'Drag me over another node', position: { x: 200, y: 200 } },
 ]
 //Test dùng list nodes và list edges để khởi tạo elements
 // export const initialElements = [

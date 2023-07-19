@@ -20,9 +20,17 @@ body,
   color: #2c3e50;
 }
 
+.vue-flow {
+  background: #616161;
+}
+
 .vue-flow__minimap {
   transform: scale(75%);
   transform-origin: bottom right;
 }
 
 .vue-flow__node.intersecting{background-color:#ff0}
+
+.borderRect{
+  border-color: blue;
+}
