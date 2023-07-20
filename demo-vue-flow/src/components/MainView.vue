@@ -10,9 +10,14 @@ import { initialElements } from '@/initial-elements'
  * or `isNodeIntersecting` to check if a node is intersecting with a given area
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const { onNodeDrag, onNodeDragStop, getIntersectingNodes, isNodeIntersecting, getNodes, findNode } = useVueFlow()
+const { onNodeDrag, onNodeDragStop, getIntersectingNodes, isNodeIntersecting, getNodes, findNode, fitView, fitBounds } = useVueFlow()
 
 const elements = ref(initialElements)
+
+/**Hàm được gọi khi dừng (thả) kéo node
+ * @param node Node đang thực hiện event
+ * @param intersections Danh sách các node giao với node đang thực hiện event
+ */
 onNodeDragStop(({ node, intersections }) => {
     console.log('======================================')
     console.log('onNodeDragStop')
@@ -21,13 +26,17 @@ onNodeDragStop(({ node, intersections }) => {
         console.log('intersections = null => do nothing')
         return
     }
+    //Lấy danh sách intersections ID
     const interIds = intersections.map(n => n.id);
     console.log('intersections: ', intersections)
     console.log('intersectionsId: ', interIds)
     console.log('intersections length: ', intersections?.length)
+
+    //Lọc children của node với danh sách giao nhau 
     let listIntersections = checkChildren(node, intersections)
     console.log('listIntersections: ', listIntersections)
 
+    //Lựa chọn node để làm parent trường hợp thả node đè lên nhiều node khách nhau
     let idSelect = interIds[0];
     if (!node.parentNode && listIntersections && listIntersections?.length > 1) {
         const intersectionInfo = listIntersections.map(n => `ID: ${n.id} - ${n.label}`)
@@ -36,25 +45,36 @@ onNodeDragStop(({ node, intersections }) => {
         console.log('idSelect: ', idSelect)
     }
 
+
     if (node.parentNode && interIds?.includes(node.parentNode)) {
+        //Nếu node giao nhau với chính parent node thì ko làm gì hết (kéo node trên chính parent node để thay đổi vị trí)
+        console.log('Drag node inside parent node')
         return
     } else if (node.parentNode && !interIds?.includes(node.parentNode)) {
+        //Nếu parent node không có trong danh sách giao nhau => node kéo ra khỏi parent node => Xóa parent node
         const oldParent = findNode(node.parentNode)
         console.log('Remove old parent')
         if (oldParent) {
             if (oldParent.data.childrens) {
-                //remove children
+                //Lọc node ra khỏi danh sách children của parent node
                 oldParent.data.childrens = oldParent.data.childrens.filter((id: string) => id !== node.id)
+                //Update lại tọa độ (position) sau khi thoát ra khỏi parent node
                 node.position.x += oldParent.position.x
                 node.position.y += oldParent.position.y
-                oldParent.style = {}
-            } else {
+            }
+
+            //Nếu parent node còn node children khác thì ko cần trả về kích thước ban đầu
+            if (!oldParent.data.childrens || oldParent.data.childrens.length == 0) {
                 oldParent.style = {}
             }
 
         }
+
         node.parentNode = ''
-        node.class = ''
+        //Remove class intersecting
+        let classString = node.class as string
+        let split = classString.split(' ')
+        node.class = split.filter(name => name !== 'intersecting').join(' ')
 
     }
     let selectedParent = listIntersections.find(n => n.id == idSelect)
@@ -65,26 +85,32 @@ onNodeDragStop(({ node, intersections }) => {
     // }
     console.log('Set new parent')
     node.parentNode = selectedParent.id
+    //Update tọa độ, kích thước cho tất cả các lớp parent node 
     updateParentNodeSize(node, [node])
     if (!selectedParent.data.childrens) {
         selectedParent.data.childrens = []
     }
 
     if (!selectedParent.data.childrens.includes(node.id)) {
+        //Add node vô danh sách children của parent node
         selectedParent.data.childrens.push(node.id)
     }
 
     if (selectedParent.parentNode) {
-        selectedParent.position.x = 0
-        selectedParent.position.y = 0
+        //Nếu parent node có parent thì update lại tọa độ của node theo computedPosition
         node.position.x -= selectedParent.computedPosition.x
         node.position.y -= selectedParent.computedPosition.y
     } else {
+        //Nếu parent node ko có parent thì update lại tọa độ của node theo position
         node.position.x -= selectedParent.position.x
         node.position.y -= selectedParent.position.y
     }
-
-    node.class = 'intersecting'
+    
+    let clss = 'intersecting'
+    if (node.class) {
+        clss = node.class + ' ' + clss
+    }
+    node.class = clss.trim()
     console.log('node aft add parent: ', node)
 })
 
@@ -106,17 +132,25 @@ onNodeDragStop(({ node, intersections }) => {
 
 //     return true;
 // }
-
+/**
+ * Hàm đệ qui dùng để lấy tất cả children node (bao gồm children trong children node cho tới node không còn children nữa) bên trong node cần check với danh sách các node giao nhau (intersections) => nếu children có trong danh sách giao nhau thì loại ra khỏi danh sách giao nhau. 
+ * Kết quả trả về là danh sách giao nhau đã được loại bỏ các children node
+ * @param nodeCheck Node dùng để lấy list children node
+ * @param intersections Danh sách các node giao nhau để check với children node
+ */
 function checkChildren(nodeCheck: GraphNode, intersections: GraphNode[]): GraphNode[] {
     let result: GraphNode[] = intersections
+    //Kiểm tra nếu node cần check không có node con thì return intersections luôn
     if (nodeCheck.data && nodeCheck.data.childrens) {
         nodeCheck.data.childrens.forEach((nodeId: string) => {
             if (intersections.find(n => n.id == nodeId)) {
+                //Lọc bỏ đi node children tồn tại trong list intersections (danh sách giao nhau)
                 result = result.filter(n => n.id !== nodeId)
             }
             //
             const node = findNode(nodeId)
             if (node) {
+                //Gọi đệ qui để check list children node trong node con và truyền danh sách giao nhau đã được lọc (result) để tiếp tục lọc và nhận lại kết quả đã lọc
                 result = checkChildren(node, result)
             }
         })
@@ -124,6 +158,11 @@ function checkChildren(nodeCheck: GraphNode, intersections: GraphNode[]): GraphN
     return result
 }
 
+/**
+ * Hàm đệ qui dùng để update tọa độ, kích thước cho các lớp parent node từ trong ra tới parent node ngoài cùng (node ko còn parent nữa)
+ * @param node Node dùng để lấy parent node cập nhật
+ * @param nodesCheck Danh sách các node chung 1 nhóm để lấy rect cập nhật cho parent node
+ */
 function updateParentNodeSize(node: GraphNode, nodesCheck: GraphNode[]) {
     if (!node.parentNode) return
     const parent = findNode(node.parentNode)
@@ -134,10 +173,48 @@ function updateParentNodeSize(node: GraphNode, nodesCheck: GraphNode[]) {
     nodesCheck.push(parent)
     const mergeRect = getRectOfNodes(nodesCheck)
     console.log('[updateParentNodeSize] mergeRect: ', mergeRect)
-    parent.position.x = mergeRect.x;
-    parent.position.y = mergeRect.y;
+
+    //Nếu x hoặc y của rect parent node thì mới thực hiện thay đổi tọa độ(ko dùng position của parent node vì phải dùng tọa độ tuyệt đối (tọa độ thật trên viewport))
+    if (getRectOfNodes([parent]).x != mergeRect.x || getRectOfNodes([parent]).y != mergeRect.y) {
+        //Cập nhật tọa độ cho node parent để cover node child
+        const raX = parent.position.x - mergeRect.x
+        const raY = parent.position.y - mergeRect.y
+        parent.position.x = mergeRect.x
+        parent.position.y = mergeRect.y
+        //Tính lại tọa độ tương đối so với parent của parent node sau khi thay đổi tọa độ để cover node child
+        if (parent.parentNode) {
+            const grandParent = findNode(parent.parentNode)
+            if (grandParent) {
+                if (grandParent.parentNode) {
+                    parent.position.x -= grandParent.computedPosition.x
+                    parent.position.y -= grandParent.computedPosition.y
+                } else {
+                    //Nếu parent node ko có parent thì update lại tọa độ của node theo position
+                    parent.position.x -= grandParent.position.x
+                    parent.position.y -= grandParent.position.y
+                }
+            }
+        }
+        console.log('[updateParentNodeSize] raX: ', raX, '- raY: ', raY)
+        //Update tọa độ cho các node child khi node parent thay đổi tọa độ để node child vẫn giữ nguyên vị trí
+        if (parent.data.childrens && parent.data.childrens.length > 0) {
+            parent.data.childrens.forEach((nodeId: string) => {
+                const childNode = findNode(nodeId)
+                if (childNode) {
+                    console.log('[updateParentNodeSize] childNode bf x: ', childNode.position.x, '- y: ', childNode.position.y)
+                    childNode.position.x += raX
+                    childNode.position.y += raY
+                    console.log('[updateParentNodeSize] childNode aft x: ', childNode.position.x, '- y: ', childNode.position.y)
+                }
+            })
+        }
+    }
+
+    //Cập nhật kích thước cho node parent để cover node child
     parent.style = { ...parent.style, width: `${mergeRect.width}px`, height: `${mergeRect.height}px` }
+    //Cập nhật node parent của node parent này
     updateParentNodeSize(parent, nodesCheck)
+
 }
 </script>
 
