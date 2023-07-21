@@ -3,16 +3,23 @@ import { VueFlow, useVueFlow, getRectOfNodes, type GraphNode, type Styles } from
 import { Background } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
 import { MiniMap } from '@vue-flow/minimap'
-import { ref } from 'vue'
-import { initialElements } from '@/initial-elements'
+import { ref, onMounted } from 'vue'
+import { useFlowElementsStore } from '@/stores/init-flow-elements'
 /**
  * You can either use `getIntersectingNodes` to check if a given node intersects with others
  * or `isNodeIntersecting` to check if a node is intersecting with a given area
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { onNodeDrag, onNodeDragStop, getIntersectingNodes, isNodeIntersecting, getNodes, findNode, fitView, fitBounds } = useVueFlow()
-
-const elements = ref(initialElements)
+const { saveElements, getElements } = useFlowElementsStore()
+let ele: any = []
+let elements = ref([])
+onMounted(async () => {
+    ele = await getElements()
+    console.log('ele: ', ele)
+    elements.value = ele
+    console.log('elements: ', elements)
+})
 let rX = 0
 let rY = 0
 /**Hàm được gọi khi dừng (thả) kéo node
