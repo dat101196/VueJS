@@ -13,7 +13,8 @@ import { initialElements } from '@/initial-elements'
 const { onNodeDrag, onNodeDragStop, getIntersectingNodes, isNodeIntersecting, getNodes, findNode, fitView, fitBounds } = useVueFlow()
 
 const elements = ref(initialElements)
-
+let rX = 0
+let rY = 0
 /**Hàm được gọi khi dừng (thả) kéo node
  * @param node Node đang thực hiện event
  * @param intersections Danh sách các node giao với node đang thực hiện event
@@ -39,10 +40,16 @@ onNodeDragStop(({ node, intersections }) => {
     //Lựa chọn node để làm parent trường hợp thả node đè lên nhiều node khách nhau
     let idSelect = interIds[0];
     if (!node.parentNode && listIntersections && listIntersections?.length > 1) {
-        const intersectionInfo = listIntersections.map(n => `ID: ${n.id} - ${n.label}`)
-        const msg = `Please enter node ID you want add this node to (${intersectionInfo.join(', ')})`
-        idSelect = prompt(msg) ?? interIds[0]
-        console.log('idSelect: ', idSelect)
+        // const intersectionInfo = listIntersections.map(n => `ID: ${n.id} - ${n.label}`)
+
+        //C1: Hiện popup hỏi chọn node làm parent
+        // const msg = `Please enter node ID you want add this node to (${intersectionInfo.join(', ')})`
+        // idSelect = prompt(msg) ?? interIds[0]
+        // console.log('idSelect: ', idSelect)
+
+        //C2: Chọn node có tọa độ z lớn hơn (nổi bên trên) làm parent. 
+        //Node nổi cao nhất là node cuối của danh sách intersections
+        idSelect = interIds[interIds.length - 1]
     }
 
 
@@ -100,12 +107,17 @@ onNodeDragStop(({ node, intersections }) => {
         //Nếu parent node có parent thì update lại tọa độ của node theo computedPosition
         node.position.x -= selectedParent.computedPosition.x
         node.position.y -= selectedParent.computedPosition.y
+        console.log('rX: ', rX, '- rY: ', rY)
+        node.position.x += rX
+        node.position.y += rY
     } else {
         //Nếu parent node ko có parent thì update lại tọa độ của node theo position
         node.position.x -= selectedParent.position.x
         node.position.y -= selectedParent.position.y
     }
-    
+
+
+
     let clss = 'intersecting'
     if (node.class) {
         clss = node.class + ' ' + clss
@@ -173,12 +185,15 @@ function updateParentNodeSize(node: GraphNode, nodesCheck: GraphNode[]) {
     nodesCheck.push(parent)
     const mergeRect = getRectOfNodes(nodesCheck)
     console.log('[updateParentNodeSize] mergeRect: ', mergeRect)
-
+    rX = 0
+    rY = 0
     //Nếu x hoặc y của rect parent node thì mới thực hiện thay đổi tọa độ(ko dùng position của parent node vì phải dùng tọa độ tuyệt đối (tọa độ thật trên viewport))
     if (getRectOfNodes([parent]).x != mergeRect.x || getRectOfNodes([parent]).y != mergeRect.y) {
         //Cập nhật tọa độ cho node parent để cover node child
         const raX = parent.position.x - mergeRect.x
         const raY = parent.position.y - mergeRect.y
+        rX = raX
+        rY = raY
         parent.position.x = mergeRect.x
         parent.position.y = mergeRect.y
         //Tính lại tọa độ tương đối so với parent của parent node sau khi thay đổi tọa độ để cover node child
