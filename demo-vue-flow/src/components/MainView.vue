@@ -3,32 +3,53 @@ import { VueFlow, useVueFlow, getRectOfNodes, type GraphNode, type Styles } from
 import { Background } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
 import { MiniMap } from '@vue-flow/minimap'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, type Ref } from 'vue'
 import { useFlowElementsStore } from '@/stores/init-flow-elements'
+import PropertiesPanel from '@/components/PropertiesPanel.vue'
 /**
  * You can either use `getIntersectingNodes` to check if a given node intersects with others
  * or `isNodeIntersecting` to check if a node is intersecting with a given area
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const { onNodeDrag, onNodeDragStop, getIntersectingNodes, isNodeIntersecting, getNodes, findNode, fitView, fitBounds } = useVueFlow()
+const { onNodeDragStart, onNodeDrag, onNodeDragStop, onNodeClick, onPaneClick, getNodes, findNode, setTransform, project, viewport } = useVueFlow()
 const { saveElements, getElements } = useFlowElementsStore()
+//Get elements from store
 let ele: any = []
 let elements = ref([])
-onMounted(async () => {
+
+const initData = async () => {
     ele = await getElements()
     console.log('ele: ', ele)
     elements.value = ele
     console.log('elements: ', elements)
+}
+initData()
+
+onNodeDragStart(() => {
+    console.log('onNodeDragStart')
 })
+
+let isDrag = false
+onNodeDrag(() => {
+    console.log('onNodeDrag')
+    isDrag = true
+})
+//
 let rX = 0
 let rY = 0
 /**Hàm được gọi khi dừng (thả) kéo node
  * @param node Node đang thực hiện event
  * @param intersections Danh sách các node giao với node đang thực hiện event
  */
-onNodeDragStop(({ node, intersections }) => {
+onNodeDragStop(({ event, node, intersections }) => {
     console.log('======================================')
-    console.log('onNodeDragStop')
+    console.log('[onNodeDragStop] Begin')
+    if (!isDrag) {
+        console.log('No drag => do nothing')
+        return
+    }
+    isDrag = false
+    console.log('event: ', event)
     console.log('node: ', node)
     if (!intersections) {
         console.log('intersections = null => do nothing')
@@ -238,14 +259,37 @@ function updateParentNodeSize(node: GraphNode, nodesCheck: GraphNode[]) {
     updateParentNodeSize(parent, nodesCheck)
 
 }
+let nodeClick: Ref<GraphNode<any, any, string> | undefined> = ref()
+onNodeClick(({ node, event }) => {
+    console.log('[onNodeClick] node: ', node)
+    console.log('[onNodeClick] viewport: ', viewport)
+    nodeClick.value = node
+    // setTransform({ x: node.computedPosition.x - 200, y: , zoom: 1.5 })
+})
+
+onPaneClick((event) => {
+    console.log('[onPaneClick] event: ', event)
+    nodeClick.value = undefined
+})
+
+const onUpdateNode = (opts: any) => {
+    console.log('[onUpdateNode] opts: ', opts)
+    if (nodeClick && nodeClick.value && opts) {
+        nodeClick.value.label = opts.label
+        nodeClick.value.style = { ...nodeClick.value.style, backgroundColor: opts.bg, color: opts.textColor }
+        nodeClick.value.hidden = opts.hidden
+    }
+}
 </script>
 
 <template>
     <VueFlow v-model="elements" fit-view-on-init :default-viewport="{ zoom: 2 }" :min-zoom="0.5" :max-zoom="4">
+
         <Background pattern-color="#fff" :gap="8" />
 
         <MiniMap />
 
         <Controls />
+        <PropertiesPanel v-if="nodeClick" :node="nodeClick" @update="onUpdateNode" />
     </VueFlow>
 </template>
