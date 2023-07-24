@@ -39,9 +39,7 @@ watch(opts, (value) => {
 </script>
 
 <template>
-    <div class="properties-container">
-
-
+    <div class="properties-container" :class="{ show: node }">
         <div class="properties-container__row">
             <label for="tbName">
                 Name
@@ -78,5 +76,13 @@ watch(opts, (value) => {
     background-color: white;
     box-shadow: var(--box-shadow-default);
     z-index: 9999;
+    transform: translateX(-300px);
+    opacity: 0;
+    transition: transform linear 0.2s, opacity linear 0.2s;
+}
+
+.properties-container.show {
+    opacity: 1;
+    transform: translateX(0);
 }
 </style>

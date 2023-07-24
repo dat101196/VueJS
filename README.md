@@ -1,4 +1,5 @@
 # VueJS
+Create vuejs project command: npm init vue@3
 Learn Vue JS
 
 Lesson 1: Use CDN of VueJS and demo binding data and v-if

@@ -2,12 +2,14 @@ export const initialElements = [
   {
     id: '1',
     label: 'Node 1',
+    type: 'input',
     style: { backgroundColor: '#00ffff', color: '#0000ff' },
     position: { x: 0, y: 0 }
   },
   {
     id: '2',
     label: 'Node 2',
+    type: 'output',
     style: { backgroundColor: '#ff1493', border: '1px solid yellow' , color: '#ffffff' },
     position: { x: 400, y: 400 }
   },

@@ -25,6 +25,33 @@ const initData = async () => {
 }
 initData()
 
+// Hàm set viền của node ở minimap
+function nodeStroke(n: GraphNode) {
+    switch (n.type) {
+        case 'input':
+            return '#00f'
+        case 'output':
+            return '#f00'
+        default:
+            return '#000'
+    }
+}
+
+// Hàm set background của node ở minimap
+function nodeColor(n: GraphNode) {
+    // if (n.type === 'custom') {
+    //     return bgColor.value
+    // }
+    switch (n.type) {
+        case 'input':
+            return '#f0f0f0'
+        case 'output':
+            return '#ff0'
+        default:
+            return '#0ff'
+    }
+}
+
 onNodeDragStart(() => {
     console.log('onNodeDragStart')
 })
@@ -287,9 +314,9 @@ const onUpdateNode = (opts: any) => {
 
         <Background pattern-color="#fff" :gap="8" />
 
-        <MiniMap />
+        <MiniMap :node-stroke-color="nodeStroke" :node-color="nodeColor" />
 
         <Controls />
-        <PropertiesPanel v-if="nodeClick" :node="nodeClick" @update="onUpdateNode" />
+        <PropertiesPanel :node="nodeClick" @update="onUpdateNode" />
     </VueFlow>
 </template>
