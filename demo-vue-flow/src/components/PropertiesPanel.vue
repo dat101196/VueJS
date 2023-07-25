@@ -41,18 +41,16 @@ watch(opts, (value) => {
 
 //
 const aq = reactive({
-    question: '',
-    answers: [
-        {
-            type: 'select',
-            options: [
-                'Opt 1',
-                'Opt 2',
-                'Opt 3',
-                'Opt 4',
-            ]
-        }
-    ]
+    question: 'What is your name?',
+    answer: {
+        type: 'Select option',
+        options: [
+            'Opt 1',
+            'Opt 2',
+            'Opt 3',
+            'Opt 4',
+        ]
+    }
 })
 
 </script>
@@ -99,12 +97,12 @@ const aq = reactive({
                     <label for="tbQ1">
                         Question
                     </label>
-                    <input class="property-text__input" name="tbQ1" type="text">
+                    <input class="property-text__input" name="tbQ1" type="text" v-model="aq.question">
                 </div>
                 <p style="text-align: left;">Answers</p>
                 <div class="properties-group__row">
                     <label>Type:</label>
-                    <select>
+                    <select v-model="aq.answer.type">
                         <option v-for="(type, index) in listAnswerTypes" :key="index">{{ type }}</option>
                     </select>
                 </div>
