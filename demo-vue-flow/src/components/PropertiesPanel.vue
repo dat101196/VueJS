@@ -1,7 +1,12 @@
 <script setup lang="ts">
-import { reactive, watch, watchEffect, type CSSProperties } from 'vue'
-import { type GraphNode } from '@vue-flow/core'
+import { reactive, watch, watchEffect, type CSSProperties, type ReactiveEffect } from 'vue'
+import { useVueFlow, type GraphNode } from '@vue-flow/core'
 import { colorNameToHex } from '@/helper/nodes-helper'
+import { AnswerTypeList } from '@/models/Answer'
+import { QuestionAnswer } from '@/models/QuestionAnswer'
+import { AnswerType } from '@/models/Enums'
+import { Answer } from '@/models/Answer'
+import type { AnswerOption } from '@/models/AnswerOption'
 const props = defineProps<{
     node: GraphNode | undefined,
 }>()
@@ -10,6 +15,7 @@ const emits = defineEmits<{
 }>()
 
 console.log('[PropertiesPanel] props node: ', props.node)
+const { findNode } = useVueFlow();
 const listNodeTypes = ['Default', 'Input', 'Output']
 const listAnswerTypes = ['Select option', 'Text']
 const opts = reactive({
@@ -31,6 +37,7 @@ watchEffect(() => {
     opts.label = props.node?.label as string
     opts.hidden = props.node?.hidden ?? false
     opts.type = listNodeTypes.find(t => t.toLowerCase() == props.node?.type) ?? 'Default'
+    console.log('[PropertiesPanel] findNode: ', findNode(props.node?.id))
 })
 
 
@@ -40,18 +47,17 @@ watch(opts, (value) => {
 })
 
 //
-const aq = reactive({
-    question: 'What is your name?',
-    answer: {
-        type: 'Select option',
-        options: [
-            'Opt 1',
-            'Opt 2',
-            'Opt 3',
-            'Opt 4',
-        ]
-    }
-})
+const ansOpts: AnswerOption[] = [
+                {id: 1, value: 'Opt 1'},
+                {id: 2, value: 'Opt 2'},
+                {id: 3, value: 'Opt 3'},
+                {id: 4, value: 'Opt 4'},
+            ]
+const aq = reactive<QuestionAnswer>(
+    {
+        question: 'What is your name?',
+        answer: new Answer(AnswerType.SelectOne, ansOpts)
+    })
 
 </script>
 
@@ -103,8 +109,17 @@ const aq = reactive({
                 <div class="properties-group__row">
                     <label>Type:</label>
                     <select v-model="aq.answer.type">
-                        <option v-for="(type, index) in listAnswerTypes" :key="index">{{ type }}</option>
+                        <option v-for="(type, index) in AnswerTypeList" :key="index">{{ type }}</option>
                     </select>
+                </div>
+                
+                <div v-if="aq.answer.type !== AnswerType.Text" class="properties-group__row">
+                    <label>List answer:</label>
+                    <ul>
+                        <li v-for="(ans, index) in aq.answer.listAnswer" :key="index">
+                            <input type="text" v-model="aq.answer.listAnswer[index].value">
+                        </li>
+                    </ul>
                 </div>
             </div>
             <button>Add questions</button>
@@ -131,6 +146,10 @@ const aq = reactive({
 .properties-container label,
 .properties-container p {
     text-transform: capitalize;
+}
+
+.properties-container li input{
+    width: 100%;
 }
 
 .properties-container.show {
