@@ -1,34 +1,34 @@
 export const initialElements = [
   {
     id: '1',
-    label: 'Node 1',
+    label: 'Form 1',
     type: 'input',
     style: { backgroundColor: '#00ffff', color: '#0000ff' },
     position: { x: 0, y: 0 }
   },
   {
     id: '2',
-    label: 'Node 2',
+    label: 'Form 2',
     type: 'output',
     style: { backgroundColor: '#ff1493', border: '1px solid yellow' , color: '#ffffff' },
     position: { x: 400, y: 400 }
   },
   {
     id: '3',
-    label: 'Node 3',
+    label: 'Form 3',
     style: { backgroundColor: 'yellow' },
     position: { x: 400, y: 0 }
   },
   {
     id: '4',
-    label: 'Node 4',
+    label: 'Form 4',
     style: { backgroundColor: '#eab05e' },
     position: { x: 0, y: 400 }
   },
   {
     id: '5',
     class: 'borderRect',
-    label: 'Drag me over another node',
+    label: 'Form 5',
     style: { backgroundColor: 'yellow' },
     position: { x: 200, y: 200 }
   },

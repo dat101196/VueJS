@@ -1,18 +1,19 @@
 <script setup lang="ts">
-import { VueFlow, useVueFlow, getRectOfNodes, type GraphNode, type Styles } from '@vue-flow/core'
+import { VueFlow, useVueFlow, getRectOfNodes, type GraphNode } from '@vue-flow/core'
 import { Background } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
 import { MiniMap } from '@vue-flow/minimap'
-import { ref, onMounted, type Ref } from 'vue'
+import { ref, type Ref } from 'vue'
 import { useFlowElementsStore } from '@/stores/init-flow-elements'
 import PropertiesPanel from '@/components/PropertiesPanel.vue'
+// import FormNode from './nodes/FormNode.vue'
 /**
  * You can either use `getIntersectingNodes` to check if a given node intersects with others
  * or `isNodeIntersecting` to check if a node is intersecting with a given area
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { onNodeDragStart, onNodeDrag, onNodeDragStop, onNodeClick, onPaneClick, getNodes, findNode, setTransform, project, viewport } = useVueFlow()
-const { saveElements, getElements } = useFlowElementsStore()
+const { getElements } = useFlowElementsStore()
 //Get elements from store
 let ele: any = []
 let elements = ref([])
@@ -287,7 +288,7 @@ function updateParentNodeSize(node: GraphNode, nodesCheck: GraphNode[]) {
 
 }
 let nodeClick: Ref<GraphNode<any, any, string> | undefined> = ref()
-onNodeClick(({ node, event }) => {
+onNodeClick(({ node }) => {
     console.log('[onNodeClick] node: ', node)
     console.log('[onNodeClick] viewport: ', viewport)
     nodeClick.value = node
@@ -305,13 +306,17 @@ const onUpdateNode = (opts: any) => {
         nodeClick.value.label = opts.label
         nodeClick.value.style = { ...nodeClick.value.style, backgroundColor: opts.bg, color: opts.textColor }
         nodeClick.value.hidden = opts.hidden
+        nodeClick.value.type = opts.type.toLowerCase()
     }
 }
 </script>
 
 <template>
     <VueFlow v-model="elements" fit-view-on-init :default-viewport="{ zoom: 2 }" :min-zoom="0.5" :max-zoom="4">
-
+        <!-- Custom node -->
+        <!-- <template #node-form="{ data }">
+            <FormNode :data="data" />
+        </template> -->
         <Background pattern-color="#fff" :gap="8" />
 
         <MiniMap :node-stroke-color="nodeStroke" :node-color="nodeColor" />
