@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, watch, watchEffect, type CSSProperties, type ReactiveEffect } from 'vue'
+import { reactive, watch, watchEffect, type CSSProperties } from 'vue'
 import { useVueFlow, type GraphNode } from '@vue-flow/core'
 import { colorNameToHex } from '@/helper/nodes-helper'
 import { AnswerTypeList } from '@/models/Answer'
@@ -15,7 +15,7 @@ const emits = defineEmits<{
 }>()
 
 console.log('[PropertiesPanel] props node: ', props.node)
-const { findNode } = useVueFlow();
+const { findNode, getNodes } = useVueFlow();
 const listNodeTypes = ['Default', 'Input', 'Output']
 const listAnswerTypes = ['Select option', 'Text']
 const opts = reactive({
@@ -45,13 +45,14 @@ watch(opts, (value) => {
     console.log('watch opts: ', value)
     emits('update', opts)
 })
+//
 
 //
 const ansOpts: AnswerOption[] = [
-    { id: 1, value: 'Opt 1' },
-    { id: 2, value: 'Opt 2' },
-    { id: 3, value: 'Opt 3' },
-    { id: 4, value: 'Opt 4' },
+    { id: 1, value: 'Opt 1', pushTo: '2' },
+    { id: 2, value: 'Opt 2', pushTo: '4' },
+    { id: 3, value: 'Opt 3', pushTo: '1' },
+    { id: 4, value: 'Opt 4', pushTo: '5' },
 ]
 
 const aq = reactive<QuestionAnswer>({
@@ -63,6 +64,13 @@ function addOption(aq: QuestionAnswer) {
     aq.answer.addOption(new AnswerOption(aq.answer.listAnswer.length + 1, '', ''))
 }
 
+function onOptionSelected(event: Event, answer: AnswerOption){
+    if(event && event.target){
+        const nodeChange = (event.target as HTMLInputElement).value
+        console.log('[onOptionSelected] nodeChange: ', nodeChange)
+        answer.pushTo = nodeChange
+    }
+}
 </script>
 
 <template>
@@ -120,9 +128,19 @@ function addOption(aq: QuestionAnswer) {
                 <div v-if="aq.answer.type !== AnswerType.Text" class="properties-group__row">
                     <label>List answer</label>
                     <button @click="addOption(aq)">Add option</button>
+                    <div class="option-row">
+                        <span class="remove-option-col"></span>
+                        <span class="option-col">Option</span>
+                        <span class="move-to-col">Move to</span>
+                    </div>
                     <ul>
-                        <li v-for="(ans, index) in aq.answer.listAnswer" :key="index">
-                            <input type="text" v-model="aq.answer.listAnswer[index].value">
+                        <li class="option-row" v-for="(ans, index) in aq.answer.listAnswer" :key="index">
+                            <!-- <button>Del</button> -->
+                            <span>{{ ans.pushTo }}</span>
+                            <input class="option-col" type="text" v-model="aq.answer.listAnswer[index].value">
+                            <select class="move-to-col" @change="onOptionSelected($event, ans)">
+                                <option v-for="(node, index) in getNodes" :key="index" :selected="node.id == ans.pushTo" :value="node.id">{{  node.label }}</option>
+                            </select>
                         </li>
                     </ul>
                 </div>
@@ -138,7 +156,7 @@ function addOption(aq: QuestionAnswer) {
     top: 0;
     bottom: 0;
     left: 0;
-    width: 300px;
+    width: 350px;
     padding: 10px;
     background-color: white;
     box-shadow: var(--box-shadow-default);
@@ -188,5 +206,21 @@ function addOption(aq: QuestionAnswer) {
 
 .aq-container {
     border-bottom: 1px solid gray;
+}
+
+.option-row {
+    display: flex;
+}
+
+.remove-option-col {
+    width: 50px;
+}
+
+.option-col {
+    flex: 1;
+}
+
+.move-to-col {
+    width: 100px;
 }
 </style>
