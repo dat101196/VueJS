@@ -6,7 +6,7 @@ import { AnswerTypeList } from '@/models/Answer'
 import { QuestionAnswer } from '@/models/QuestionAnswer'
 import { AnswerType } from '@/models/Enums'
 import { Answer } from '@/models/Answer'
-import type { AnswerOption } from '@/models/AnswerOption'
+import { AnswerOption } from '@/models/AnswerOption'
 const props = defineProps<{
     node: GraphNode | undefined,
 }>()
@@ -48,16 +48,20 @@ watch(opts, (value) => {
 
 //
 const ansOpts: AnswerOption[] = [
-                {id: 1, value: 'Opt 1'},
-                {id: 2, value: 'Opt 2'},
-                {id: 3, value: 'Opt 3'},
-                {id: 4, value: 'Opt 4'},
-            ]
-const aq = reactive<QuestionAnswer>(
-    {
-        question: 'What is your name?',
-        answer: new Answer(AnswerType.SelectOne, ansOpts)
-    })
+    { id: 1, value: 'Opt 1' },
+    { id: 2, value: 'Opt 2' },
+    { id: 3, value: 'Opt 3' },
+    { id: 4, value: 'Opt 4' },
+]
+
+const aq = reactive<QuestionAnswer>({
+    question: 'What is your name?',
+    answer: new Answer(AnswerType.SelectOne, ansOpts)
+})
+
+function addOption(aq: QuestionAnswer) {
+    aq.answer.addOption(new AnswerOption(aq.answer.listAnswer.length + 1, '', ''))
+}
 
 </script>
 
@@ -112,9 +116,10 @@ const aq = reactive<QuestionAnswer>(
                         <option v-for="(type, index) in AnswerTypeList" :key="index">{{ type }}</option>
                     </select>
                 </div>
-                
+
                 <div v-if="aq.answer.type !== AnswerType.Text" class="properties-group__row">
-                    <label>List answer:</label>
+                    <label>List answer</label>
+                    <button @click="addOption(aq)">Add option</button>
                     <ul>
                         <li v-for="(ans, index) in aq.answer.listAnswer" :key="index">
                             <input type="text" v-model="aq.answer.listAnswer[index].value">
@@ -148,7 +153,7 @@ const aq = reactive<QuestionAnswer>(
     text-transform: capitalize;
 }
 
-.properties-container li input{
+.properties-container li input {
     width: 100%;
 }
 
