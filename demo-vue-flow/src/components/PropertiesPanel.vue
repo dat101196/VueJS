@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { reactive, watch, watchEffect, type CSSProperties } from 'vue'
-import { useVueFlow, type GraphNode } from '@vue-flow/core'
+import { reactive, computed, watch, watchEffect, type CSSProperties } from 'vue'
+import { useVueFlow, type GraphNode, MarkerType } from '@vue-flow/core'
 import { colorNameToHex } from '@/helper/nodes-helper'
 import { AnswerTypeList } from '@/models/Answer'
 import { QuestionAnswer } from '@/models/QuestionAnswer'
 import { AnswerType } from '@/models/Enums'
 import { Answer } from '@/models/Answer'
 import { AnswerOption } from '@/models/AnswerOption'
+import { createOptionEdge } from '@/helper/edge-helper'
+
 const props = defineProps<{
     node: GraphNode | undefined,
 }>()
@@ -15,9 +17,8 @@ const emits = defineEmits<{
 }>()
 
 console.log('[PropertiesPanel] props node: ', props.node)
-const { findNode, getNodes } = useVueFlow();
+const { findNode, getNodes, addEdges, removeEdges } = useVueFlow();
 const listNodeTypes = ['Default', 'Input', 'Output']
-const listAnswerTypes = ['Select option', 'Text']
 const opts = reactive({
     bg: '#ffffff',
     textColor: '#000000',
@@ -42,33 +43,82 @@ watchEffect(() => {
 
 
 watch(opts, (value) => {
-    console.log('watch opts: ', value)
+    console.log('[watch opts] opts: ', opts)
+    console.log('[watch opts] value: ', value)
     emits('update', opts)
 })
 //
 
 //
-const ansOpts: AnswerOption[] = [
-    { id: 1, value: 'Opt 1', pushTo: '2' },
-    { id: 2, value: 'Opt 2', pushTo: '4' },
-    { id: 3, value: 'Opt 3', pushTo: '1' },
-    { id: 4, value: 'Opt 4', pushTo: '5' },
-]
+const filterNodes = computed(() => {
+    let fNodes = getNodes.value.filter(n => n.id != props.node?.id)
+    let customNodes = fNodes.map(n => ({ id: n.id, label: n.label }))
+    customNodes = [{ id: '', label: '' }, ...customNodes]
+    return customNodes
+})
 
-const aq = reactive<QuestionAnswer>({
-    question: 'What is your name?',
+let ansOpts: AnswerOption[] = []
+let aq = reactive<QuestionAnswer>({
+    id: 1,
+    question: 'How are you?',
     answer: new Answer(AnswerType.SelectOne, ansOpts)
 })
 
-function addOption(aq: QuestionAnswer) {
-    aq.answer.addOption(new AnswerOption(aq.answer.listAnswer.length + 1, '', ''))
+watchEffect(() => {
+    if (filterNodes.value && filterNodes.value.length > 4) {
+        ansOpts = [
+            { id: 1, value: 'Fine', pushTo: filterNodes.value[0].id },
+            { id: 2, value: 'Not good', pushTo: filterNodes.value[0].id },
+            { id: 3, value: 'Very good', pushTo: filterNodes.value[0].id },
+            { id: 4, value: 'Bad', pushTo: filterNodes.value[0].id },
+        ]
+        aq.answer.listAnswer = ansOpts
+    }
+})
+
+let questions = reactive<QuestionAnswer[]>([])
+if(props.node && props.node.data && props.node.data.questions){
+    questions = reactive(props.node.data.questions)
 }
 
-function onOptionSelected(event: Event, answer: AnswerOption){
-    if(event && event.target){
+watch(questions, (value) => {
+    console.log('[watch questions] questions: ', questions)
+    console.log('[watch questions] value: ', value)
+    const curNode = findNode(props.node?.id)
+    if(curNode){
+        curNode.data.questions = questions
+    }
+})
+
+function addQuestion() {
+    if (props.node) {
+        let aq2 = new QuestionAnswer(1, '', new Answer(AnswerType.SelectOne, []))
+        questions.push(aq2)
+    }
+}
+
+function addOption(aq: QuestionAnswer) {
+    aq.answer.addOption(new AnswerOption(aq.answer.listAnswer.length + 1, ''))
+}
+
+function onOptionSelected(event: Event, answer: AnswerOption, question: QuestionAnswer) {
+    if (event && event.target) {
         const nodeChange = (event.target as HTMLInputElement).value
         console.log('[onOptionSelected] nodeChange: ', nodeChange)
         answer.pushTo = nodeChange
+
+        if (answer.edgeId) {
+            removeEdges(answer.edgeId)
+        }
+
+        if (props.node?.id) {
+            const egde = createOptionEdge(props.node, nodeChange, question, answer)
+            addEdges([
+                egde
+            ])
+            answer.edgeId = egde.id
+        }
+
     }
 }
 </script>
@@ -136,10 +186,11 @@ function onOptionSelected(event: Event, answer: AnswerOption){
                     <ul>
                         <li class="option-row" v-for="(ans, index) in aq.answer.listAnswer" :key="index">
                             <!-- <button>Del</button> -->
-                            <span>{{ ans.pushTo }}</span>
+                            <!-- <span>{{ ans.pushTo }}</span> -->
                             <input class="option-col" type="text" v-model="aq.answer.listAnswer[index].value">
-                            <select class="move-to-col" @change="onOptionSelected($event, ans)">
-                                <option v-for="(node, index) in getNodes" :key="index" :selected="node.id == ans.pushTo" :value="node.id">{{  node.label }}</option>
+                            <select class="move-to-col" @change="onOptionSelected($event, ans, aq)">
+                                <option v-for="(node, index) in filterNodes" :key="index" :selected="node.id == ans.pushTo"
+                                    :value="node.id">{{ node.label }}</option>
                             </select>
                         </li>
                     </ul>
@@ -209,6 +260,7 @@ function onOptionSelected(event: Event, answer: AnswerOption){
 }
 
 .option-row {
+    margin: 5px 0;
     display: flex;
 }
 
@@ -218,6 +270,7 @@ function onOptionSelected(event: Event, answer: AnswerOption){
 
 .option-col {
     flex: 1;
+    margin-right: 5px;
 }
 
 .move-to-col {

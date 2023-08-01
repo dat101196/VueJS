@@ -2,14 +2,14 @@ export const initialElements = [
   {
     id: '1',
     label: 'Form 1',
-    type: 'input',
+    type: 'default',
     style: { backgroundColor: '#00ffff', color: '#0000ff' },
     position: { x: 0, y: 0 }
   },
   {
     id: '2',
     label: 'Form 2',
-    type: 'output',
+    type: 'default',
     style: { backgroundColor: '#ff1493', border: '1px solid yellow' , color: '#ffffff' },
     position: { x: 400, y: 400 }
   },
@@ -17,7 +17,7 @@ export const initialElements = [
     id: '3',
     label: 'Form 3',
     style: { backgroundColor: 'yellow' },
-    position: { x: 400, y: 0 }
+    position: { x: 400, y: 0 },
   },
   {
     id: '4',
