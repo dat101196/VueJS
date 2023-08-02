@@ -3,8 +3,8 @@ import { VueFlow, useVueFlow, getRectOfNodes, type GraphNode } from '@vue-flow/c
 import { Background } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
 import { MiniMap } from '@vue-flow/minimap'
-import { ref, type Ref } from 'vue'
-import { useFlowElementsStore } from '@/stores/init-flow-elements'
+import { ref, type CSSProperties, type Ref } from 'vue'
+import { useFlowElementsStore } from '@/stores/vue-flow-elements'
 import PropertiesPanel from '@/components/PropertiesPanel.vue'
 // import FormNode from './nodes/FormNode.vue'
 /**
@@ -13,7 +13,7 @@ import PropertiesPanel from '@/components/PropertiesPanel.vue'
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { onNodeDragStart, onNodeDrag, onNodeDragStop, onNodeClick, onPaneClick, getNodes, findNode, setTransform, project, viewport } = useVueFlow()
-const { getElements } = useFlowElementsStore()
+const { getElements, setSelectedNode } = useFlowElementsStore()
 //Get elements from store
 let ele: any = []
 let elements = ref([])
@@ -128,7 +128,14 @@ onNodeDragStop(({ event, node, intersections }) => {
 
             //Nếu parent node còn node children khác thì ko cần trả về kích thước ban đầu
             if (!oldParent.data.childrens || oldParent.data.childrens.length == 0) {
-                oldParent.style = {}
+                if(oldParent.style){
+                    const parentStyles = oldParent.style as CSSProperties
+                    parentStyles.width = ''
+                    parentStyles.height = ''
+                }else{
+                    oldParent.style = {}
+                }
+                
             }
 
         }
@@ -287,28 +294,19 @@ function updateParentNodeSize(node: GraphNode, nodesCheck: GraphNode[]) {
     updateParentNodeSize(parent, nodesCheck)
 
 }
-let nodeClick: Ref<GraphNode<any, any, string> | undefined> = ref()
+
 onNodeClick(({ node }) => {
     console.log('[onNodeClick] node: ', node)
     console.log('[onNodeClick] viewport: ', viewport)
-    nodeClick.value = node
+    setSelectedNode(node)
     // setTransform({ x: node.computedPosition.x - 200, y: , zoom: 1.5 })
 })
 
 onPaneClick((event) => {
     console.log('[onPaneClick] event: ', event)
-    nodeClick.value = undefined
+    setSelectedNode()
 })
 
-const onUpdateNode = (opts: any) => {
-    console.log('[onUpdateNode] opts: ', opts)
-    if (nodeClick && nodeClick.value && opts) {
-        nodeClick.value.label = opts.label
-        nodeClick.value.style = { ...nodeClick.value.style, backgroundColor: opts.bg, color: opts.textColor }
-        nodeClick.value.hidden = opts.hidden
-        nodeClick.value.type = opts.type.toLowerCase()
-    }
-}
 </script>
 
 <template>
@@ -322,6 +320,6 @@ const onUpdateNode = (opts: any) => {
         <MiniMap :node-stroke-color="nodeStroke" :node-color="nodeColor" />
 
         <Controls />
-        <PropertiesPanel :node="nodeClick" @update="onUpdateNode" />
+        <PropertiesPanel />
     </VueFlow>
-</template>
+</template>@/stores/vue-flow-elements

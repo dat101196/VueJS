@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { FlowExportObject } from '@vue-flow/core'
+import type { GraphNode,  FlowExportObject } from '@vue-flow/core'
 import { initialElements } from '@/initial-elements'
 export const useFlowElementsStore = defineStore('flowElements', () => {
     const elements = ref<any[]>([])
@@ -23,5 +23,16 @@ export const useFlowElementsStore = defineStore('flowElements', () => {
         }
 
     }
-    return { saveElements, getElements }
+    //
+    const selectedNode = ref<GraphNode>()
+    function setSelectedNode(node?: GraphNode) {
+        console.log('[setSelectedNode] node: ', node)
+        selectedNode.value = node
+    }
+
+    function getSelectedNode() {
+        console.log('[getSelectedNode] selectedNode: ', selectedNode)
+        return selectedNode
+    }
+    return { saveElements, getElements, setSelectedNode, getSelectedNode, selectedNode }
 })

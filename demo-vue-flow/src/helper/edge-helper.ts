@@ -4,7 +4,7 @@ import { MarkerType, type GraphNode } from "@vue-flow/core";
 
 export function createOptionEdge(soureNode: GraphNode, targetNode: string, question: QuestionAnswer, answer: AnswerOption) {
     return {
-        id: `e${soureNode.id}-${targetNode}-q${question.id}-a${answer.id}`,
+        id: `fr${soureNode.id}-to${targetNode}-que${question.id}-ans${answer.id}`,
         label: `${question.question}\n${answer.value}`,
         source: soureNode.id,
         target: targetNode,
