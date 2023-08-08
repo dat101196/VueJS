@@ -27,7 +27,6 @@ a:visited {
   display: flex;
   margin: 0 auto;
   width: 100vw;
-  height: calc(100vh - 200px);
   max-width: 1200px;
 }
 
@@ -145,7 +144,6 @@ a {
   width: 250px;
   height: 150px;
   object-fit: cover;
-  display: block;
 }
 
 .experiences .card .card__text {
@@ -157,7 +155,6 @@ a {
 }
 
 .experience-details img {
-  float: left;
   margin: 10px;
 }
 
