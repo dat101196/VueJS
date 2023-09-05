@@ -1,8 +1,10 @@
 <template>
-    <section>
+    <section class="experience-details">
         <h1>{{ experience.name }}</h1>
-        <img :src="`/images/${experience.image}`" :alt="experience.name">
-        <p>{{ experience.description }}</p>
+        <div>
+            <img :src="`/images/${experience.image}`" :alt="experience.name">
+            <p>{{ experience.description }}</p>
+        </div>
     </section>
 </template>
 

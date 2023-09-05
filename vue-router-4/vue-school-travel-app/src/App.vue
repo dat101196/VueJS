@@ -109,7 +109,11 @@ export default {
 }
 
 .left-sidebar {
-  width: 20%;
+  width: 10%;
+  position: fixed;
+  left: 0;
+  top: 90px;
+  bottom: 0;
 }
 
 .main-view {

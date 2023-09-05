@@ -1,17 +1,28 @@
 <template>
     <ul>
         <li>
-            <router-link :class="{selected: store.selectedMenu == 'protected'}" :to="{ name: 'protected' }">Dashboard</router-link>
+            <router-link :class="{ selected: store.selectedMenu == 'protected' }"
+                :to="{ name: 'protected' }">Dashboard</router-link>
         </li>
         <li>
-            <router-link :class="{selected: store.selectedMenu == 'invoices'}" :to="{ name: 'invoices' }">Invoices</router-link>
+            <router-link :class="{ selected: store.selectedMenu == 'invoices' }"
+                :to="{ name: 'invoices' }">Invoices</router-link>
         </li>
+        <li v-for="des in destinations" :key="des.id">
+            <AppLink
+                :to="{ name: 'destination.show', params: { id: des.id, slug: des.slug }, query: { q1: 'test', q2: 123, q3: false } }">
+                {{ des.name }}
+            </AppLink>
+        </li>
+
     </ul>
 </template>
 
 <script setup>
-import {useMenu} from '@/stores/menu'
-
+import { useMenu } from '@/stores/menu'
+import sourceData from '@/data.json'
+import { reactive } from 'vue';
+const destinations = reactive(sourceData.destinations)
 const store = useMenu();
 </script>
 
@@ -27,7 +38,7 @@ li {
     margin: 10px;
 }
 
-.selected{
+.selected {
     color: red;
 }
 </style>

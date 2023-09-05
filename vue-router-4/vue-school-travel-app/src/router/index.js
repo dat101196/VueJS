@@ -11,9 +11,16 @@ const routes = [
     {
         path: '/',
         name: 'Home',
-        component: Home,
+        components: {
+            //default là router-view ko có name
+            default: Home,
+            //Named views. 
+            //LeftSideBar là name của router-view bên trong template của App.vue
+            LeftSideBar: () => import('@/components/LeftSideBar.vue'),
+        },
         //Alias cho ra kết quả tương tự dùng redirect. Khi ng ta gõ host/home thì sẽ redirect vô trang Home đã đc khai báo phía trên
         alias: '/home',
+
     },
     //Redirect path: dùng để khai báo 1 path ko tồn tại và redirect về 1 path/trang có tồn tại để tránh trường hợp hiện NotFound
     //Đoạn khai báo dưới đẩy dùng để khi ng ta gõ host/home thì sẽ redirect vô trang Home đã đc khai báo phía trên
