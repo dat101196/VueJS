@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import {useMenu} from '@/stores/menu'
+import { useMenu } from '@/stores/menu'
 import { onBeforeRouteLeave } from 'vue-router'
 //
 const store = useMenu();
