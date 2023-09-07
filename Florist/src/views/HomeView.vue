@@ -2,6 +2,7 @@
 import type { Flower } from '@/models/Flower';
 import { useFlowerStore } from '@/stores/FlowerData';
 import { ref } from 'vue';
+import ItemCard from '@/components/ItemCard.vue'
 const flowerList = ref<Flower[]>();
 const flowerStore = useFlowerStore();
 const initData = async () => {
@@ -14,7 +15,16 @@ const initData = async () => {
 initData()
 </script>
 <template>
-    <pre>
-        {{ flowerList }}
-    </pre>
+    <div class="list-item">
+        <ItemCard v-for="fl in flowerList" :key="fl.id" :flower="fl" />
+    </div>
 </template>
+
+<style scoped>
+.list-item{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+}
+</style>
