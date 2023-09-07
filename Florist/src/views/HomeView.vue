@@ -1,9 +1,20 @@
 <script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
+import type { Flower } from '@/models/Flower';
+import { useFlowerStore } from '@/stores/FlowerData';
+import { ref } from 'vue';
+const flowerList = ref<Flower[]>();
+const flowerStore = useFlowerStore();
+const initData = async () => {
+    const flowers = await flowerStore.getAllFlowers()
+    if (flowers) {
+        flowerList.value = flowers;
+    }
+    console.log('flowerList: ', flowerList)
+}
+initData()
 </script>
-
 <template>
-  <main>
-    <TheWelcome />
-  </main>
+    <pre>
+        {{ flowerList }}
+    </pre>
 </template>
