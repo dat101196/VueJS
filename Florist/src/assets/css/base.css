@@ -19,6 +19,26 @@
   --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
   --vt-c-text-dark-1: var(--vt-c-white);
   --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
+  /* My variable */
+  --white-color: #fff;
+  --black-color: #000;
+  --text-color: #333;
+  --text-light-gray-color: #999;
+  --primary-color: #962bfa;
+  --primary-hover-color: #a445fc;
+  --sub-color: #fb89dd;
+  --border-color: #dbdbdb;
+  --option-item-hover-color: #f3f3f3;
+  --star-gold-color: #ffce3e;
+  --header-height: 150px;
+  --navbar-height: 34px;
+  --header-with-search-height: calc(
+    var(--header-height) - var(--navbar-height)
+  );
+  --box-shadow-default: 1px 2px 3px #c2c2c2;
+  --border-radius-default: 3px;
+  --arrow-size-default: 15px 25px;
+  --arrow-top-position-default: -24px;
 }
 
 /* semantic color variables for this project */
