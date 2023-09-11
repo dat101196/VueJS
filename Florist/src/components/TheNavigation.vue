@@ -13,8 +13,18 @@
                 </AppLink>
                 <AppLink :to="{ name: 'protected' }">Dashboard</AppLink>
                 <AppLink :to="{ name: 'invoices' }">Invoices</AppLink> -->
-                <AppLink :to="{ name: 'about' }">About</AppLink>
-                <AppLink to="https://google.com">Google</AppLink>
+                <!-- <AppLink :to="{ name: 'about' }">About</AppLink>
+                <AppLink to="https://google.com">Google</AppLink> -->
+                <!-- Search Input -->
+                <div class="header__search-bar">
+                    <!-- Search Input -->
+                    <div class="header__search-bar-wrap">
+                        <input type="text" class="header__search-bar-input" placeholder="Nhập để tìm kiếm sản phẩm">
+                    </div>
+                    <button class="btn btn--primary header__search-bar-btn">
+                        <i class="header__search-bar-btn-icon ti-search"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -69,8 +79,57 @@ watchEffect(() => {
 
 /* Header with search */
 .header-with-search {
-  height: var(--header-with-search-height);
+    height: var(--header-with-search-height);
+    display: flex;
+    align-items: center;
+}
+
+/* Search bar */
+
+.header__search-bar {
+  background-color: var(--white-color);
+  flex: 1;
+  height: 40px;
+  margin-left: 32px;
+  border-radius: var(--border-radius-default);
   display: flex;
   align-items: center;
 }
+
+.header__search-bar-wrap {
+  flex: 1;
+  height: 100%;
+  position: relative;
+}
+
+.header__search-bar-input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  padding: 0 16px;
+  color: var(--text-color);
+  border-radius: var(--border-radius-default);
+  font-size: 1.4rem;
+}
+
+.header__search-bar-input:focus~.header__search-bar-history {
+  display: block;
+  animation: fadeIn ease-in 0.2s;
+}
+
+
+/* Search button */
+.header__search-bar-btn {
+  height: 34px;
+  margin-right: 3px;
+  min-width: 0;
+  width: 60px;
+}
+
+.header__search-bar-btn-icon {
+  font-size: 1.4rem;
+  color: var(--white-color);
+}
+
 </style>
