@@ -1,26 +1,24 @@
 <script setup lang="ts">
+import SideMenu from '@/components/Menus/SideMenu.vue';
 import { RouterView } from 'vue-router'
-import TheNavigation from './components/TheNavigation.vue';
 </script>
 
 <template>
-  <TheNavigation />
-  <RouterView />
-  <!-- <div class="container">
+  <div class="container">
     <div class="grid wide">
       <div class="row">
         <div class="col l-2 m-4 s-12 left-side-menu">
-          <RouterView name="LeftSideBar" />
+          <SideMenu />
         </div>
         <div class="col l-10 m-8 s-12">
           <RouterView />
         </div>
       </div>
     </div>
-  </div> -->
+  </div>
 </template>
 
-<!-- <style scoped>
+<style scoped>
 header {
   line-height: 1.5;
   max-height: 100vh;
@@ -83,7 +81,7 @@ nav a:first-of-type {
   }
 }
 
-.left-side-menu{
+.left-side-menu {
   margin-top: 10px;
 }
-</style> -->
+</style>

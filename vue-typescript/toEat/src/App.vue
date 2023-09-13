@@ -1,6 +1,11 @@
 <script setup lang="ts">
 // import { RouterLink, RouterView } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
+import { useCounterStore } from '@/stores/counter'
+import { storeToRefs } from 'pinia'
+const store = useCounterStore()
+const { name, doubleCount } = storeToRefs(store)
+console.log(name, doubleCount)
 </script>
 
 <template>

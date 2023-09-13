@@ -7,16 +7,15 @@
                 <AppLink id="logo" to="/">
                     <img id="logo-img" src="../assets/img/rose_logo.png" />
                 </AppLink>
+                <AppLink :to="{ name: 'shop' }">Shop</AppLink>
+                <AppLink :to="{ name: 'about' }">Về chúng tôi</AppLink>
                 <!-- <AppLink v-for="des in destinations" :key="des.id"
                     :to="{ name: 'destination.show', params: { id: des.id, slug: des.slug }, query: {q1: 'test', q2: 123, q3: false} }">
                     {{ des.name }}
                 </AppLink>
-                <AppLink :to="{ name: 'protected' }">Dashboard</AppLink>
-                <AppLink :to="{ name: 'invoices' }">Invoices</AppLink> -->
-                <!-- <AppLink :to="{ name: 'about' }">About</AppLink>
                 <AppLink to="https://google.com">Google</AppLink> -->
                 <!-- Search Input -->
-                <div class="header__search-bar">
+                <div class="header__search-bar" :style="{visibility: hideSearchBar ? 'collapse' : 'visible'}">
                     <!-- Search Input -->
                     <div class="header__search-bar-wrap">
                         <input type="text" class="header__search-bar-input" placeholder="Nhập để tìm kiếm sản phẩm">
@@ -30,12 +29,19 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useRouter } from 'vue-router'
-import { watchEffect } from 'vue'
+import { watchEffect, ref } from 'vue'
+const hideSearchBar = ref<boolean>(false)
 const router = useRouter();
 watchEffect(() => {
     console.log('currentRoute: ', router.currentRoute.value);
+    console.log('currentRoute name: ', router.currentRoute.value.name);
+    if(router.currentRoute.value.name == '' || router.currentRoute.value.name == 'home'){
+        hideSearchBar.value = true;
+    }else{
+        hideSearchBar.value = false;
+    }
 })
 </script>
 
@@ -43,10 +49,6 @@ watchEffect(() => {
 /* Navigation */
 
 #nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
     margin-top: 0;
     padding: 30px;
     height: var(--header-height);
@@ -57,6 +59,7 @@ watchEffect(() => {
     display: flex;
     align-items: center;
     z-index: 2;
+    font-size: 1.4rem;
 }
 
 #nav a {
@@ -64,11 +67,6 @@ watchEffect(() => {
     margin-right: 20px;
     color: white;
     opacity: 1;
-}
-
-#nav a:hover {
-    background-color: transparent;
-    opacity: 0.8;
 }
 
 /* Logo */

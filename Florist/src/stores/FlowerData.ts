@@ -2,6 +2,7 @@ import type { Flower } from '@/models/Flower'
 import { defineStore } from 'pinia'
 import { get } from '@/helper/HttpHelper'
 export const useFlowerStore = defineStore('flower', () => {
+  
   async function getAllFlowers(): Promise<Flower[] | undefined> {
     try {
       console.log('[getAllFlowers] begin')

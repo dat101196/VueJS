@@ -7,7 +7,28 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: HomeView,
+      //Alias cho ra kết quả tương tự dùng redirect. Khi ng ta gõ host/home thì sẽ redirect vô trang Home đã đc khai báo phía trên
+      alias: '/home'
+    },
+
+    {
+      path: '/shop',
+      name: 'shop',
+      //Khi dùng nhiều router-view với named router-view thì ta cần dùng components để khai báo views/components cho từng router-views
+      component: () => import('@/views/ShopView.vue'),
+      
+      children: [
+        //Children route:
+        //Muốn hiển thị children route thì trong template của DestinationShow.vue (parent) phải có router-view. Khi đó thay vì nhấn vô router-link để chuyển vô view được định nghĩa bên dưới thì sẽ hiện trong router-view của parent
+        {
+          path: ':isn/:slug',
+          name: 'products.show',
+          component: () => import('@/views/ProductsView.vue'),
+          //Ngăn ko cho transition khi nhấn vô experience card
+          meta: { transition: 'none' }
+        }
+      ]
     },
     {
       path: '/about',
@@ -16,6 +37,12 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/AboutView.vue')
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'NotFound',
+      component: () => import('@/views/NotFound.vue'),
+      meta: { transition: 'none' }
     }
   ]
 })

@@ -6,4 +6,5 @@ export interface Flower {
   price: number
   size: number
   category: Category
+  imageURL: string
 }
