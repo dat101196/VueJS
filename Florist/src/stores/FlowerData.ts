@@ -1,6 +1,7 @@
 import type { Flower } from '@/models/Flower'
 import { defineStore } from 'pinia'
 import { get } from '@/helper/HttpHelper'
+import { isNullorEmpty } from '@/helper/UIHelper'
 export const useFlowerStore = defineStore('flower', () => {
   
   async function getAllFlowers(): Promise<Flower[] | undefined> {
@@ -14,5 +15,17 @@ export const useFlowerStore = defineStore('flower', () => {
     }
   }
 
-  return { getAllFlowers }
+  async function getFlowerDetail(id: string): Promise<Flower | undefined> {
+    try {
+      console.log('[getFlowerDetail] begin')
+      if(isNullorEmpty(id)) return undefined
+      const response = await get<Flower>(`https://localhost:7274/api/Flower/Get/${id}`)
+      return response.parsedBody
+    } catch (err) {
+      console.log('[getFlowerDetail] err: ', err)
+      return undefined
+    }
+  }
+
+  return { getAllFlowers, getFlowerDetail }
 })

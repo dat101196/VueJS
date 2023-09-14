@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import TheNavigation from './components/TheNavigation.vue';
+import LoadingView from './components/LoadingView.vue';
 </script>
 
 <template>
   <TheNavigation />
   <RouterView />
+  <LoadingView />
   <!-- <div class="container">
     <div class="grid wide">
       <div class="row">

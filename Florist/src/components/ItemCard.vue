@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { formatNumber } from '@/helper/UIHelper';
 import type { Flower } from '@/models/Flower';
 
 defineProps<{
@@ -7,13 +8,16 @@ defineProps<{
 </script>
 
 <template>
-  <a class="product-item">
+  <a class="product-item" @click="$emit('onClickItem')">
     <div class="product-item__img" :style="{'background-image': 'url('+ flower.imageURL +')'}">
     </div>
     <h4 class="product-item__name">{{ flower.flowerName }}
     </h4>
     <div class="product-item__price">
-      <span class="product-item__price-current">{{ flower.price }} đ</span>
+      <span class="product-item__price-current">{{ formatNumber(flower.price) }}đ</span>
+    </div>
+    <div class="add-to-cart">
+      <button class="btn btn--semi-solid btn-add-to-cart">Thêm vào giỏ hàng</button>
     </div>
     <!-- <div class="product-item__action">
       <span class="product-item__wish-list product-item__wish-list--active">
@@ -36,7 +40,7 @@ defineProps<{
   display: block;
   position: relative;
   background-color: var(--white-color);
-  margin-top: 10px;
+  margin-top: var(--margin-top-item-card);
   padding-bottom: 10px;
   border-radius: var(--border-radius-default);
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
@@ -71,6 +75,7 @@ defineProps<{
   color: var(--text-color);
   height: 3.6rem;
   margin: 8px;
+  text-align: center;
   /* Chỉnh giao diện để text chỉ hiển thị 2 dòng nếu dài hơn sẽ hiện dấu ... 
     Lưu ý: chỉ hỗ trợ cho phiên bản Edge 17, Firefox 68, Safari 5, Chrome 6, Opera 15 trở lên*/
   overflow: hidden;
@@ -84,6 +89,7 @@ defineProps<{
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .product-item__price-old {
@@ -96,7 +102,7 @@ defineProps<{
 .product-item__price-current {
   font-size: 1.4rem;
   color: var(--primary-color);
-  margin-left: 10px;
+  text-align: center;
 }
 
 .product-item__action {
@@ -149,5 +155,12 @@ i.product-item__wish-list-icon-active {
   color: #595959;
   font-weight: 300;
   font-size: 1.1rem;
+}
+
+.btn-add-to-cart{
+  display: block;
+  margin: auto;
+  font-size: 1.2rem;
+  border-radius: 20px;
 }
 </style>

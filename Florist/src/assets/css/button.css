@@ -1,42 +1,74 @@
 /* Button */
 .btn {
-    min-width: 124px;
-    height: 34px;
-    border: none;
-    text-decoration: none;
-    border-radius: 2px;
-    font-size: 1.5rem;
-    padding: 0 12px;
-    outline: none;
-    cursor: pointer;
-    color: var(--text-color);
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    line-height: 1.6rem;
-  }
-  
-  .btn.btn--normal:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-  }
-  
-  .btn.btn--primary {
-    color: var(--white-color);
-    background-color: var(--primary-color);
-  }
-  
-  .btn.btn--primary:hover {
-    background-color: var(--primary-hover-color);
-  }
-  
-  .btn.btn--disabled {
-    color: #949494;
-    cursor: default;
-    background-color: #ccc;
-  }
-  
-  .btn.btn--size-s {
-    height: 32px;
-    font-size: 1.2rem;
-    padding: 0 8px;
-  }
+  min-width: 124px;
+  height: 34px;
+  border: none;
+  text-decoration: none;
+  border-radius: 2px;
+  font-size: 1.5rem;
+  padding: 0 12px;
+  outline: none;
+  cursor: pointer;
+  color: var(--text-color);
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 1.6rem;
+}
+
+.btn.btn--normal:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.btn.btn--primary {
+  color: var(--white-color);
+  background-color: var(--primary-color);
+}
+
+.btn.btn--primary:hover {
+  background-color: var(--primary-hover-color);
+}
+
+.btn.btn--primary-solid {
+  color: var(--primary-color);
+  background-color: transparent;
+  border: 1px solid var(--primary-color);
+}
+
+.btn.btn--primary-solid:hover {
+  color: var(--white-color);
+  background-color: var(--primary-color);
+}
+
+
+.btn.btn--semi {
+  color: var(--white-color);
+  background-color: var(--sub-color);
+}
+
+.btn.btn--semi:hover {
+  background-color: var(--sub-hover-color);
+}
+
+.btn.btn--semi-solid {
+  color: var(--sub-color);
+  background-color: transparent;
+  border: 1px solid var(--sub-color);
+}
+
+.btn.btn--semi-solid:hover {
+  color: var(--white-color);
+  background-color: var(--sub-color);
+}
+
+.btn.btn--disabled {
+  color: #949494;
+  cursor: default;
+  background-color: #ccc;
+}
+
+.btn.btn--size-s {
+  height: 32px;
+  font-size: 1.2rem;
+  padding: 0 8px;
+}

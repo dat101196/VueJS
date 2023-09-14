@@ -13,9 +13,9 @@ import router from './router'
 import AppLinkVue from './components/AppLink.vue'
 
 const app = createApp(App)
-
 app.use(createPinia())
 app.use(router)
 
-app.component('AppLink', AppLinkVue)
-.mount('#app')
+app.component('AppLink', AppLinkVue).mount('#app')
+
+

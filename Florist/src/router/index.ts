@@ -11,7 +11,6 @@ const router = createRouter({
       //Alias cho ra kết quả tương tự dùng redirect. Khi ng ta gõ host/home thì sẽ redirect vô trang Home đã đc khai báo phía trên
       alias: '/home'
     },
-
     {
       path: '/shop',
       name: 'shop',
@@ -29,6 +28,14 @@ const router = createRouter({
           meta: { transition: 'none' }
         }
       ]
+    },
+    {
+      path: '/flower-detail/:id',
+      name: 'flower-detail',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/ProductDetailView.vue')
     },
     {
       path: '/about',

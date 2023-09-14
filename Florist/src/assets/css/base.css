@@ -27,6 +27,7 @@
   --primary-color: #962bfa;
   --primary-hover-color: #a445fc;
   --sub-color: #fb89dd;
+  --sub-hover-color: #fa99e0;
   --border-color: #dbdbdb;
   --option-item-hover-color: #f3f3f3;
   --star-gold-color: #ffce3e;
@@ -38,6 +39,7 @@
   --border-radius-default: 3px;
   --arrow-size-default: 15px 25px;
   --arrow-top-position-default: -24px;
+  --margin-top-item-card: 10px;
 }
 
 /* semantic color variables for this project */
