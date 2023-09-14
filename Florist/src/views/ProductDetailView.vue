@@ -37,6 +37,9 @@ watchEffect(() => {
 </template>
 
 <style scoped>
+.product-detail{
+    margin-top: var(--margin-top-item-card);
+}
 .product-image {
     /* padding-top: 100% - 100% ở đây là = width của parent chứa nó */
     padding-top: 100%;

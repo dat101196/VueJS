@@ -1,6 +1,17 @@
 <script setup lang="ts">
 import SideMenu from '@/components/Menus/SideMenu.vue';
-import { RouterView } from 'vue-router'
+import { watchEffect } from 'vue';
+import { RouterView, useRouter, useRoute } from 'vue-router'
+const router = useRouter()
+const route = useRoute()
+console.log('first load shop view')
+watchEffect(() => {
+  console.log('[ShopView] Route name: ', route.name)
+  //detect nếu route name = shop (là trang này) thì push route để hiển thị tất cả sản phẩm
+  if (route.name && route.name == 'shop') {
+    router.push({ name: 'products.show', params: { isn: -1, slug: 'Tất cả' } })
+  }
+})
 </script>
 
 <template>
@@ -19,7 +30,7 @@ import { RouterView } from 'vue-router'
 </template>
 
 <style scoped>
-.container{
+.container {
   margin-top: 10px;
 }
 </style>
