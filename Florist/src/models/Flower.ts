@@ -6,5 +6,7 @@ export interface Flower {
   price: number
   size: number
   category: Category
-  imageURL: string
+  description: string
+  thumbnail: string
+  listImages: string
 }

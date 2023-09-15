@@ -26,10 +26,19 @@ watchEffect(() => {
         <div class="grid wide">
             <div class="row">
                 <div class="col l-6 m-6 s-12">
-                    <div class="product-image" :style="{ 'background-image': `url(${flower.imageURL})` }"></div>
+                    <div class="grid">
+                        <div class="row">
+                            <div class="col l-3 m-3 s-3 list-images">
+                                <img v-for="" src="" alt="">
+                            </div>
+                            <div class="col l-9 m-9 s-9">
+                                <div class="product-image" :style="{ 'background-image': `url(${flower.thumbnail})` }"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="col l-6 m-6 s-12">
-                    <p>{{ flower.flowerName }}</p>
+                    <h1>{{ flower.flowerName }}</h1>
                 </div>
             </div>
         </div>
@@ -39,6 +48,10 @@ watchEffect(() => {
 <style scoped>
 .product-detail{
     margin-top: var(--margin-top-item-card);
+}
+
+.list-images{
+    background-color: red;
 }
 .product-image {
     /* padding-top: 100% - 100% ở đây là = width của parent chứa nó */

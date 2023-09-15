@@ -9,7 +9,7 @@ defineProps<{
 
 <template>
   <a class="product-item" @click="$emit('onClickItem')">
-    <div class="product-item__img" :style="{'background-image': 'url('+ flower.imageURL +')'}">
+    <div class="product-item__img" :style="{'background-image': 'url('+ flower.thumbnail +')'}">
     </div>
     <h4 class="product-item__name">{{ flower.flowerName }}
     </h4>
