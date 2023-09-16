@@ -29,7 +29,7 @@ watchEffect(() => {
                     <div class="grid">
                         <div class="row">
                             <div class="col l-3 m-3 s-3 list-images">
-                                <img v-for="" src="" alt="">
+                                <img src="" alt="">
                             </div>
                             <div class="col l-9 m-9 s-9">
                                 <div class="product-image" :style="{ 'background-image': `url(${flower.thumbnail})` }"></div>
