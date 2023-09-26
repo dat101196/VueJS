@@ -1,15 +1,22 @@
 <script setup lang="ts">
 import { formatNumber } from '@/helper/UIHelper';
 import type { Flower } from '@/models/Flower';
+import { useCartStore } from '@/stores/ShoppingCartManager';
 
 defineProps<{
   flower: Flower
 }>()
+
+const cartStore = useCartStore()
+function addToCart(flower: Flower) {
+  cartStore.addFlowerToCart(flower, 1)
+}
+
 </script>
 
 <template>
-  <a class="product-item" @click="$emit('onClickItem')">
-    <div class="product-item__img" :style="{'background-image': 'url('+ flower.thumbnail +')'}">
+  <div class="product-item" @click.self="$emit('onClickItem')">
+    <div class="product-item__img" :style="{ 'background-image': 'url(' + flower.thumbnail + ')' }">
     </div>
     <h4 class="product-item__name">{{ flower.flowerName }}
     </h4>
@@ -17,7 +24,8 @@ defineProps<{
       <span class="product-item__price-current">{{ formatNumber(flower.price) }}đ</span>
     </div>
     <div class="add-to-cart">
-      <button class="btn btn--semi-solid btn-round-corner btn-add-to-cart">Thêm vào giỏ hàng</button>
+      <button class="btn btn--semi-solid btn-round-corner btn-add-to-cart" @click.stop.prevent="addToCart(flower)">Thêm vào giỏ
+        hàng</button>
     </div>
     <!-- <div class="product-item__action">
       <span class="product-item__wish-list product-item__wish-list--active">
@@ -32,7 +40,7 @@ defineProps<{
         <i class="fa-solid fa-star"></i>
       </div>
     </div> -->
-  </a>
+  </div>
 </template>
 
 <style scoped>
@@ -157,7 +165,7 @@ i.product-item__wish-list-icon-active {
   font-size: 1.1rem;
 }
 
-.btn-add-to-cart{
+.btn-add-to-cart {
   display: block;
   margin: auto;
   font-size: 1.2rem;
