@@ -33,13 +33,14 @@
   --star-gold-color: #ffce3e;
   --header-height: 150px;
   --navbar-height: 34px;
-  --header-with-search-height: calc(var(--header-height) - var(--navbar-height);
-    );
+  --header-with-search-height: calc(var(--header-height) - var(--navbar-height));
+  --header-search-bar-height: 40px;
   --box-shadow-default: 1px 2px 3px #c2c2c2;
   --border-radius-default: 3px;
   --arrow-size-default: 15px 25px;
   --arrow-top-position-default: -24px;
   --margin-top-item-card: 10px;
+  --side-menu-width: 250px;
 }
 
 /* semantic color variables for this project */
@@ -77,6 +78,15 @@
   box-sizing: border-box;
   margin: 0;
   font-weight: normal;
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+*::-webkit-scrollbar {
+  display: none;
 }
 
 html {
@@ -108,4 +118,42 @@ ul {
 li {
   padding: 0;
   margin: 0;
+}
+
+pre {
+  font-family: "Roboto", sans-serif;
+  text-wrap: wrap;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes growth {
+  from {
+    transform: scale(var(--grow-from));
+  }
+
+  to {
+    transform: scale(var(--grow-to));
+  }
+}
+
+@keyframes growtWithOpacity {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }

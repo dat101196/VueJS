@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import TheNavigation from './components/TheNavigation.vue';
+import TheNavigationMobile from './components/TheNavigationMobile.vue';
 import LoadingView from './components/LoadingView.vue';
 </script>
 
 <template>
-  <TheNavigation />
+  <TheNavigation/>
+  <TheNavigationMobile/>
   <RouterView />
   <LoadingView />
   <!-- <div class="container">

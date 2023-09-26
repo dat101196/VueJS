@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import SideMenu from '@/components/Menus/SideMenu.vue';
+import CategoryMenu from '@/components/Menus/CategoryMenu.vue';
 import { watchEffect } from 'vue';
 import { RouterView, useRouter, useRoute } from 'vue-router'
 const router = useRouter()
@@ -19,7 +19,7 @@ watchEffect(() => {
     <div class="grid wide">
       <div class="row">
         <div class="col l-2 m-4 s-12 left-side-menu">
-          <SideMenu />
+          <CategoryMenu />
         </div>
         <div class="col l-10 m-8 s-12">
           <RouterView />

@@ -17,7 +17,7 @@ defineProps<{
       <span class="product-item__price-current">{{ formatNumber(flower.price) }}đ</span>
     </div>
     <div class="add-to-cart">
-      <button class="btn btn--semi-solid btn-add-to-cart">Thêm vào giỏ hàng</button>
+      <button class="btn btn--semi-solid btn-round-corner btn-add-to-cart">Thêm vào giỏ hàng</button>
     </div>
     <!-- <div class="product-item__action">
       <span class="product-item__wish-list product-item__wish-list--active">
@@ -161,6 +161,5 @@ i.product-item__wish-list-icon-active {
   display: block;
   margin: auto;
   font-size: 1.2rem;
-  border-radius: 20px;
 }
 </style>

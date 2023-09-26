@@ -7,8 +7,14 @@
           Tất cả sản phẩm
         </AppLink>
       </li>
+      <li class="product-category-item">
+        <AppLink class="product-category-item__link" :to="{ name: 'products.show', params: { isn: -1, slug: 'Tất cả' } }">
+          Tất cả sản phẩm
+        </AppLink>
+      </li>
       <li class="product-category-item" v-for="cate in store.categories" :key="cate.isn">
-        <AppLink class="product-category-item__link" :to="{ name: 'products.show', params: { isn: cate.isn, slug: cate.categoryName } }">
+        <AppLink class="product-category-item__link"
+          :to="{ name: 'products.show', params: { isn: cate.isn, slug: cate.categoryName } }">
           {{ cate.categoryName }}
         </AppLink>
       </li>
@@ -80,5 +86,27 @@ watchEffect(() => {
 
 .product-category-item__link:hover {
   color: var(--primary-color);
+}
+
+@media(max-width: 768px) {
+  .product-category__heading{
+    display: none;
+  }
+  .product-category-list {
+    overflow: auto;
+    white-space: nowrap;
+  }
+  .product-category-item{
+    display: inline-block;
+    text-align: center;
+  }
+  .product-category-item::before {
+    content: "";
+    border-top: 0px solid var(--border-color);
+    border-left: 1px solid var(--border-color);
+    top: 16px;
+    bottom: 16px;
+    left: 0;
+  }
 }
 </style>

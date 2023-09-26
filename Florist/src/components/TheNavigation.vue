@@ -9,13 +9,14 @@
                 </AppLink>
                 <AppLink :to="{ name: 'shop' }">Shop</AppLink>
                 <AppLink :to="{ name: 'about' }">Về chúng tôi</AppLink>
+                <AppLink :to="{ name: 'demo-menu-page' }">Demo</AppLink>
                 <!-- <AppLink v-for="des in destinations" :key="des.id"
                     :to="{ name: 'destination.show', params: { id: des.id, slug: des.slug }, query: {q1: 'test', q2: 123, q3: false} }">
                     {{ des.name }}
                 </AppLink>
                 <AppLink to="https://google.com">Google</AppLink> -->
                 <!-- Search Input -->
-                <div class="header__search-bar" :style="{visibility: hideSearchBar ? 'collapse' : 'visible'}">
+                <div class="header__search-bar" v-if="!hideSearchBar">
                     <!-- Search Input -->
                     <div class="header__search-bar-wrap">
                         <input type="text" class="header__search-bar-input" placeholder="Nhập để tìm kiếm sản phẩm">
@@ -24,6 +25,8 @@
                         <i class="header__search-bar-btn-icon ti-search"></i>
                     </button>
                 </div>
+
+                <CartHeader v-if="!hideSearchBar"/>
             </div>
         </div>
     </div>
@@ -32,14 +35,15 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { watchEffect, ref } from 'vue'
+import CartHeader from '@/components/CartHeader.vue';
 const hideSearchBar = ref<boolean>(false)
 const router = useRouter();
 watchEffect(() => {
     console.log('currentRoute: ', router.currentRoute.value);
     console.log('currentRoute name: ', router.currentRoute.value.name);
-    if(router.currentRoute.value.name == '' || router.currentRoute.value.name == 'home'){
+    if (router.currentRoute.value.name == '' || router.currentRoute.value.name == 'home') {
         hideSearchBar.value = true;
-    }else{
+    } else {
         hideSearchBar.value = false;
     }
 })
@@ -85,49 +89,54 @@ watchEffect(() => {
 /* Search bar */
 
 .header__search-bar {
-  background-color: var(--white-color);
-  flex: 1;
-  height: 40px;
-  margin-left: 32px;
-  border-radius: var(--border-radius-default);
-  display: flex;
-  align-items: center;
+    background-color: var(--white-color);
+    flex: 1;
+    height: 40px;
+    margin-left: 32px;
+    border-radius: var(--border-radius-default);
+    display: flex;
+    align-items: center;
 }
 
 .header__search-bar-wrap {
-  flex: 1;
-  height: 100%;
-  position: relative;
+    flex: 1;
+    height: 100%;
+    position: relative;
 }
 
 .header__search-bar-input {
-  width: 100%;
-  height: 100%;
-  border: none;
-  outline: none;
-  padding: 0 16px;
-  color: var(--text-color);
-  border-radius: var(--border-radius-default);
-  font-size: 1.4rem;
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    padding: 0 16px;
+    color: var(--text-color);
+    border-radius: var(--border-radius-default);
+    font-size: 1.4rem;
 }
 
 .header__search-bar-input:focus~.header__search-bar-history {
-  display: block;
-  animation: fadeIn ease-in 0.2s;
+    display: block;
+    animation: fadeIn ease-in 0.2s;
 }
 
 
 /* Search button */
 .header__search-bar-btn {
-  height: 34px;
-  margin-right: 3px;
-  min-width: 0;
-  width: 60px;
+    height: 34px;
+    margin-right: 3px;
+    min-width: 0;
+    width: 60px;
 }
 
 .header__search-bar-btn-icon {
-  font-size: 1.4rem;
-  color: var(--white-color);
+    font-size: 1.4rem;
+    color: var(--white-color);
 }
 
+@media(max-width: 768px) {
+    #nav {
+        display: none;
+    }
+}
 </style>

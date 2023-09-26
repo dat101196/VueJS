@@ -32,10 +32,12 @@ const router = createRouter({
     {
       path: '/flower-detail/:id',
       name: 'flower-detail',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/ProductDetailView.vue')
+    },
+    {
+      path: '/cart-detail',
+      name: 'cart-detail',
+      component: () => import('../views/CartDetailView.vue')
     },
     {
       path: '/about',
@@ -44,6 +46,11 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/AboutView.vue')
+    },
+    {
+      path: '/demo-menu-page',
+      name: 'demo-menu-page',
+      component: () => import('../views/DemoSideMenuView.vue')
     },
     {
       path: '/:pathMatch(.*)*',
