@@ -4,27 +4,4 @@
   color: #2c3e50;
 }
 
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
-}
-
-p,
-pre,
-span,
-a {
-  font-size: 1.4rem;
-}
-
-body {
-  padding: 0;
-  margin: 0;
-  background: #eee;
-}
-
-a {
-  text-decoration: none;
-}
-
 @media (min-width: 1024px) {}

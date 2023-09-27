@@ -3,11 +3,9 @@
     <div class="header__cart" :class="{ shake: shakeCart }">
         <div class="header__cart-wrap">
 
-            <div class="header__cart-icon-container">
-                <AppLink :to="{ name: 'cart-detail' }">
-                    <i class="header__cart-icon ti-shopping-cart"></i>
-                    <span class="header__cart-number-badge">{{ totalQty > 99 ? "99+" : totalQty }}</span>
-                </AppLink>
+            <div class="header__cart-icon-container" @click="onOpenCartDetail">
+                <i class="header__cart-icon ti-shopping-cart" @click="onOpenCartDetail"></i>
+                <span class="header__cart-number-badge">{{ totalQty > 99 ? "99+" : totalQty }}</span>
             </div>
 
             <div class="header__cart-list">
@@ -56,6 +54,8 @@ import { formatNumber } from '@/helper/UIHelper';
 import { useCartStore } from '@/stores/ShoppingCartManager';
 import { storeToRefs } from 'pinia';
 import { watch, ref, computed } from 'vue';
+import { useRouter } from 'vue-router'
+
 const store = useCartStore()
 const { listCartItems, updateCart } = storeToRefs(store)
 function onRemoveItem(id: string) {
@@ -73,4 +73,8 @@ watch(() => updateCart, (newVal) => {
 }, { deep: true })
 
 const totalQty = computed(() => listCartItems.value ? listCartItems.value.reduce((sumQty, cartItem) => sumQty + cartItem.quantity, 0) : 0)
+const router = useRouter()
+function onOpenCartDetail() {
+    router.push({ name: 'cart-detail' })
+}
 </script>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import CategoryMenu from '@/components/Menus/CategoryMenu.vue';
+import CategoryMenu from '@/components/menus/CategoryMenu.vue';
 import { watchEffect } from 'vue';
 import { RouterView, useRouter, useRoute } from 'vue-router'
 const router = useRouter()

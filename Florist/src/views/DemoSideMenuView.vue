@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import SideMenuDynamic from '@/components/Menus/SideMenuDynamic.vue';
+import SideMenuDynamic from '@/components/menus/SideMenuDynamic.vue';
 import type { MenuItem } from '@/models/MenuItem';
 import { ref } from 'vue';
 

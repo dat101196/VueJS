@@ -9,24 +9,26 @@
                 </AppLink>
                 <AppLink :to="{ name: 'shop' }">Shop</AppLink>
                 <AppLink :to="{ name: 'about' }">Về chúng tôi</AppLink>
-                <AppLink :to="{ name: 'demo-menu-page' }">Demo</AppLink>
                 <!-- <AppLink v-for="des in destinations" :key="des.id"
                     :to="{ name: 'destination.show', params: { id: des.id, slug: des.slug }, query: {q1: 'test', q2: 123, q3: false} }">
                     {{ des.name }}
                 </AppLink>
                 <AppLink to="https://google.com">Google</AppLink> -->
                 <!-- Search Input -->
-                <div class="header__search-bar" v-if="!hideSearchBar">
-                    <!-- Search Input -->
-                    <div class="header__search-bar-wrap">
-                        <input type="text" class="header__search-bar-input" placeholder="Nhập để tìm kiếm sản phẩm">
-                    </div>
-                    <button class="btn btn--primary header__search-bar-btn">
-                        <i class="header__search-bar-btn-icon ti-search"></i>
-                    </button>
-                </div>
+                <div class="header-right" v-if="!hideSearchBar">
+                    <AppLink :to="{ name: 'demo-menu-page' }">Demo</AppLink>
 
-                <CartHeader v-if="!hideSearchBar"/>
+                    <div class="header__search-bar">
+                        <!-- Search Input -->
+                        <div class="header__search-bar-wrap">
+                            <input type="text" class="header__search-bar-input" placeholder="Nhập để tìm kiếm sản phẩm">
+                        </div>
+                        <button class="btn btn--primary header__search-bar-btn">
+                            <i class="header__search-bar-btn-icon ti-search"></i>
+                        </button>
+                    </div>
+                    <CartHeader />
+                </div>
             </div>
         </div>
     </div>
@@ -83,6 +85,14 @@ watchEffect(() => {
 .header-with-search {
     height: var(--header-with-search-height);
     display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-right{
+    display: flex;
+    justify-content: flex-start;
+    flex: 1;
     align-items: center;
 }
 

@@ -32,7 +32,7 @@ export const useCartStore = defineStore('cartManager', () => {
     console.log('[removeFlowerFromCart] flowerIdRemove: ', flowerIdRemove)
     const listItemsFiltered = listCartItems.value?.filter(
       (item) => item.flower.id != flowerIdRemove
-    )
+    ) 
     console.log('[removeFlowerFromCart] listItemsFiltered: ', listItemsFiltered)
     listCartItems.value = listItemsFiltered
     console.log('[removeFlowerFromCart] listCartItems: ', listCartItems)

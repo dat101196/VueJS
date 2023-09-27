@@ -14,13 +14,19 @@
 }
 
 .header__cart-icon-container {
-    padding: 8px;
+    height: 60px;
+    width: 60px;
     cursor: pointer;
+    position: relative;
 }
 
 .header__cart-icon {
-    font-size: 2.4rem;
+    font-size: 3rem;
     color: var(--white-color);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%);
 }
 
 .header__cart-number-badge {
@@ -32,8 +38,8 @@
     color: var(--primary-color);
     background-color: var(--white-color);
     border-radius: 50%;
-    top: -10px;
-    left: -10px;
+    top: 0px;
+    left: calc(50% - 1.5rem);
     text-align: center;
     border: 2px solid var(--primary-color);
 }

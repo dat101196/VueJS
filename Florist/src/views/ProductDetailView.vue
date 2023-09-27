@@ -1,3 +1,38 @@
+<template>
+    <div class="product-detail" v-if="flower">
+        <div class="grid wide">
+            <div class="row">
+                <div class="col l-8 m-12 s-12 image-container">
+                    <div class="image view-image" :style="{ 'background-image': `url(${imageMain})` }"></div>
+                    <ul class="list-images">
+                        <li v-for="(flowerimage, index) in flower.listImages" :key="index"
+                            @click="selectImage(flowerimage, index)">
+                            <div class="image image-in-list" :class="{ 'image-selected': selectedImgIndex == index }"
+                                :style="{ 'background-image': `url(${flowerimage})` }"></div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col l-4 m-12 s-12 info-container">
+                    <h1>{{ flower.flowerName }}</h1>
+                    <p>Loại: {{ flower.category.categoryName }}</p>
+                    <span>Giá: <span class="product-price">{{ formatNumber(flower.price) }}đ</span></span>
+
+                    <div class="btn-function">
+                        <div class="select-qty-function">
+                            <button class="btn btn--primary-solid btn-dec" @click="changeQtyAddCart(-1)">-</button>
+                            <input type="number" class="input-select-qty" v-model="qtyAddCart" />
+                            <button class="btn btn--primary-solid btn-inc" @click="changeQtyAddCart(1)">+</button>
+                        </div>
+                        <button class="btn btn--primary btn-add-to-cart" @click="addToCart">Thêm vào giỏ hàng</button>
+                        <!-- <button class="btn btn--semi btn-round-corner btn-buy-now">Mua ngay</button> -->
+                    </div>
+                    <pre class="product-description">{{ flower.description }}</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
 <script setup lang="ts">
 import { HideLoading, ShowLoading } from '@/helper/UIHelper';
 import type { Flower } from '@/models/Flower';
@@ -57,40 +92,6 @@ watch(qtyAddCart, (newVal) => {
 })
 
 </script>
-<template>
-    <div class="product-detail" v-if="flower">
-        <div class="grid wide">
-            <div class="row">
-                <div class="col l-8 m-12 s-12 image-container">
-                    <div class="image view-image" :style="{ 'background-image': `url(${imageMain})` }"></div>
-                    <ul class="list-images">
-                        <li v-for="(flowerimage, index) in flower.listImages" :key="index"
-                            @click="selectImage(flowerimage, index)">
-                            <div class="image image-in-list" :class="{ 'image-selected': selectedImgIndex == index }"
-                                :style="{ 'background-image': `url(${flowerimage})` }"></div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col l-4 m-12 s-12 info-container">
-                    <h1>{{ flower.flowerName }}</h1>
-                    <p>Loại: {{ flower.category.categoryName }}</p>
-                    <span>Giá: <span class="product-price">{{ formatNumber(flower.price) }}đ</span></span>
-
-                    <div class="btn-function">
-                        <div class="select-qty-function">
-                            <button class="btn btn--primary-solid btn-dec" @click="changeQtyAddCart(-1)">-</button>
-                            <input type="number" class="input-select-qty" v-model="qtyAddCart" />
-                            <button class="btn btn--primary-solid btn-inc" @click="changeQtyAddCart(1)">+</button>
-                        </div>
-                        <button class="btn btn--primary btn-add-to-cart" @click="addToCart">Thêm vào giỏ hàng</button>
-                        <!-- <button class="btn btn--semi btn-round-corner btn-buy-now">Mua ngay</button> -->
-                    </div>
-                    <pre class="product-description">{{ flower.description }}</pre>
-                </div>
-            </div>
-        </div>
-    </div>
-</template>
 
 <style scoped>
 .product-detail {
@@ -190,19 +191,6 @@ watch(qtyAddCart, (newVal) => {
 .btn-function {
     display: flex;
     margin: 10px 0;
-}
-
-/* Remove arrow in input number */
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-/* Firefox */
-input[type=number] {
-    -moz-appearance: textfield;
 }
 
 @media (max-width: 768px) {

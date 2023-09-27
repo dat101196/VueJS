@@ -27,7 +27,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import SideMenuWithFade from './Menus/SideMenuWithFade.vue';
+import SideMenuWithFade from './menus/SideMenuWithFade.vue';
 import { useSideMenuStore } from '@/stores/SideMenuManager'
 import CartHeader from '@/components/CartHeader.vue';
 const hideSearchBar = ref<boolean>(true)
