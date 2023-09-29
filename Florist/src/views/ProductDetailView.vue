@@ -18,11 +18,12 @@
                     <span>Giá: <span class="product-price">{{ formatNumber(flower.price) }}đ</span></span>
 
                     <div class="btn-function">
-                        <div class="select-qty-function">
+                        <!-- <div class="select-qty-function">
                             <button class="btn btn--primary-solid btn-dec" @click="changeQtyAddCart(-1)">-</button>
                             <input type="number" class="input-select-qty" v-model="qtyAddCart" />
                             <button class="btn btn--primary-solid btn-inc" @click="changeQtyAddCart(1)">+</button>
-                        </div>
+                        </div> -->
+                        <ChangeQuantityControl :quantity-value="qtyAddCart" @change-quantity="changeQtyAddCart($event)" />
                         <button class="btn btn--primary btn-add-to-cart" @click="addToCart">Thêm vào giỏ hàng</button>
                         <!-- <button class="btn btn--semi btn-round-corner btn-buy-now">Mua ngay</button> -->
                     </div>
@@ -41,7 +42,7 @@ import { ref, watch, watchEffect } from 'vue';
 import { useRoute } from 'vue-router'
 import { formatNumber } from '@/helper/UIHelper';
 import { useCartStore } from '@/stores/ShoppingCartManager';
-
+import ChangeQuantityControl from '@/components/controls/ChangeQuantityControl.vue';
 const { getFlowerDetail } = useFlowerStore()
 const route = useRoute()
 const flower = ref<Flower>()
@@ -80,7 +81,7 @@ function addToCart() {
 }
 
 function changeQtyAddCart(qty: number) {
-    qtyAddCart.value += qty
+    qtyAddCart.value = qty
 }
 
 watch(qtyAddCart, (newVal) => {
@@ -112,6 +113,7 @@ watch(qtyAddCart, (newVal) => {
     /* IE and Edge */
     scrollbar-width: none;
     /* Firefox */
+    margin-right: 10px;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
@@ -164,28 +166,8 @@ watch(qtyAddCart, (newVal) => {
     color: var(--primary-color);
 }
 
-.select-qty-function {
-    border: 1px solid var(--primary-color);
-    margin-right: 16px;
-}
-
-.btn-inc,
-.btn-dec {
-    min-width: 30px;
-    width: 30px;
-    height: 34px;
-    border: none;
-    border-radius: 0;
-}
-
-.input-select-qty {
-    border-style: solid;
-    border-color: var(--primary-color);
-    border-width: 0 1px;
-    width: 60px;
-    height: 34px;
-    text-align: center;
-    outline: none;
+.btn-add-to-cart {
+    margin-left: 16px;
 }
 
 .btn-function {

@@ -53,11 +53,11 @@ import { formatNumber } from '@/helper/UIHelper';
 // import type { CartItem } from '@/models/CartItem';
 import { useCartStore } from '@/stores/ShoppingCartManager';
 import { storeToRefs } from 'pinia';
-import { watch, ref, computed } from 'vue';
+import { watch, ref } from 'vue';
 import { useRouter } from 'vue-router'
 
 const store = useCartStore()
-const { listCartItems, updateCart } = storeToRefs(store)
+const { listCartItems, updateCart, totalQty } = storeToRefs(store)
 function onRemoveItem(id: string) {
     console.log("[onRemoveItem] id: ", id)
     store.removeFlowerFromCart(id)
@@ -72,7 +72,7 @@ watch(() => updateCart, (newVal) => {
     }
 }, { deep: true })
 
-const totalQty = computed(() => listCartItems.value ? listCartItems.value.reduce((sumQty, cartItem) => sumQty + cartItem.quantity, 0) : 0)
+
 const router = useRouter()
 function onOpenCartDetail() {
     router.push({ name: 'cart-detail' })

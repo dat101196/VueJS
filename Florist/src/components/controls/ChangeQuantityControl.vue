@@ -35,7 +35,6 @@ watch(qtyValue, (newVal) => {
 <style scoped>
 .qty-control {
     display: flex;
-    margin: 10px 0;
     border: 1px solid var(--primary-color);
     width: 130px
 }
