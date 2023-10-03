@@ -1,6 +1,7 @@
 import './assets/css/base.css'
 import './assets/css/main.css'
 import './assets/css/button.css'
+import './assets/css/input.css'
 import './assets/css/grid.css'
 import './assets/css/responsive.css'
 import './assets/css/themify-icons.css'

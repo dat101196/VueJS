@@ -1,0 +1,13 @@
+input,
+select {
+    border: 1px solid #c3c3c3;
+    font-size: 1.6rem;
+    border-radius: 5px;
+    padding: 10px;
+    outline: none;
+}
+
+input:focus,
+select:focus {
+    border-color: #888888;
+}

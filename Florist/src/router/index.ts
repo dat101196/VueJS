@@ -40,6 +40,11 @@ const router = createRouter({
       component: () => import('../views/CartDetailView.vue')
     },
     {
+      path: '/checkout',
+      name: 'checkout',
+      component: () => import('../views/CheckoutView.vue')
+    },
+    {
       path: '/about',
       name: 'about',
       // route level code-splitting

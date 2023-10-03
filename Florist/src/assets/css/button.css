@@ -69,6 +69,7 @@
   color: #949494;
   cursor: default;
   background-color: #ccc;
+  pointer-events: none;
 }
 
 .btn.btn--size-s {

@@ -14,29 +14,22 @@ export const useCartStore = defineStore(
         : 0
     )
 
+    const listSelectedItems = computed(() => listCartItems.value?.filter((item) => item.isSelected))
+
     const totalSelectedItem = computed(() =>
-      listCartItems.value
-        ? listCartItems.value.reduce(
-            (sumQty, cartItem) => sumQty + (cartItem.isSelected ? 1 : 0),
-            0
-          )
-        : 0
+      listSelectedItems.value ? listSelectedItems.value.length : 0
     )
 
     const totalSelectedQty = computed(() =>
-      listCartItems.value
-        ? listCartItems.value.reduce(
-            (sumQty, cartItem) => sumQty + (cartItem.isSelected ? cartItem.quantity : 0),
-            0
-          )
+      listSelectedItems.value
+        ? listSelectedItems.value.reduce((sumQty, cartItem) => sumQty + cartItem.quantity, 0)
         : 0
     )
 
     const totalSelectedPrice = computed(() =>
-      listCartItems.value
-        ? listCartItems.value.reduce(
-            (sumPrice, cartItem) =>
-              sumPrice + (cartItem.isSelected ? cartItem.quantity * cartItem.flower.price : 0),
+      listSelectedItems.value
+        ? listSelectedItems.value.reduce(
+            (sumPrice, cartItem) => sumPrice + cartItem.quantity * cartItem.flower.price,
             0
           )
         : 0
@@ -78,6 +71,7 @@ export const useCartStore = defineStore(
     }
     return {
       listCartItems,
+      listSelectedItems,
       updateCart,
       totalQty,
       totalSelectedItem,

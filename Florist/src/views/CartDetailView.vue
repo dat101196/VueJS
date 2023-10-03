@@ -23,7 +23,8 @@
                                         sản
                                         phẩm): <span class="cart-detail__checkout-total-selected-price">{{
                                             formatNumber(totalSelectedPrice) }}đ</span></p>
-                                    <button class="btn btn--primary">Thanh toán</button>
+                                    <button class="btn btn--primary" :class="{ 'btn--disabled': totalSelectedItem <= 0 }"
+                                        @click="onGoToCheckout">Thanh toán</button>
                                 </div>
                             </div>
                         </div>
@@ -32,8 +33,7 @@
                     <div class="cart-detail__list-items">
                         <div class="cart-detail__item" v-for="(item, index) in listCartItems" :key="index">
                             <input type="checkbox" v-model="item.isSelected" />
-                            <AppLink class="cart-detail__item"
-                                :to="{ name: 'flower-detail', params: { id: item.flower.id } }">
+                            <AppLink :to="{ name: 'flower-detail', params: { id: item.flower.id } }">
                                 <img :src="item.flower.thumbnail" :alt="item.flower.flowerName"
                                     class="cart-detail__item-img">
                             </AppLink>
@@ -50,7 +50,7 @@
                                         <ChangeQuantityControl :quantity-value="item.quantity"
                                             @change-quantity="changeQtyAddCart($event, item)" />
                                     </div>
-                                    <p class="cart-detail__item-total-price">= {{ formatNumber(item.flower.price *
+                                    <p class="cart-detail__item-total-price">Tổng: {{ formatNumber(item.flower.price *
                                         item.quantity) }}đ</p>
                                 </div>
                                 <div class="cart-detail__item-body">
@@ -75,6 +75,7 @@ import { useCartStore } from '@/stores/ShoppingCartManager';
 import { storeToRefs } from 'pinia';
 import ChangeQuantityControl from '@/components/controls/ChangeQuantityControl.vue';
 import { watch } from 'vue';
+import { useRouter } from 'vue-router'
 
 const store = useCartStore()
 const { listCartItems, totalSelectedItem, totalSelectedPrice, selectedAll } = storeToRefs(store)
@@ -96,6 +97,11 @@ function onSelectedAllChange() {
             item.isSelected = selectedAll.value
         })
     }
+}
+
+const router = useRouter()
+function onGoToCheckout() {
+    router.push({ name: "checkout" })
 }
 
 watch(listCartItems, (newVal) => {
@@ -181,7 +187,7 @@ watch(listCartItems, (newVal) => {
 .cart-detail__list-items {
     padding-left: 0;
     list-style-type: none;
-    margin-bottom: 40px;
+    margin-bottom: 100px;
 }
 
 .cart-detail__item {
@@ -189,6 +195,11 @@ watch(listCartItems, (newVal) => {
     align-items: stretch;
     text-decoration: none;
     cursor: default;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.cart-detail__item:last-child {
+    border-bottom: none;
 }
 
 .cart-detail__item:hover {
