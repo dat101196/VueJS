@@ -53,6 +53,11 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue')
     },
     {
+      path: '/thankyou/:id',
+      name: 'thankyou',
+      component: () => import('../views/ThankYouView.vue')
+    },
+    {
       path: '/demo-menu-page',
       name: 'demo-menu-page',
       component: () => import('../views/DemoSideMenuView.vue')

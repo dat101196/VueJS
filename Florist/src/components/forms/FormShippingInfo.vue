@@ -2,16 +2,18 @@
     <div class="grid">
         <div class="row">
             <div class="col l-8 m-7 s-12">
-                <FormField type="text" title="Họ tên" value="Atom" />
+                <FormField type="text" title="Họ tên" placeholder="Nguyễn Văn A" v-model:value="fullName"
+                    :is-error="isNameError" />
             </div>
             <div class="col l-4 m-5 s-12">
-                <FormField type="number" title="Điện thoại" placeholder="0773772222" />
+                <FormField type="number" title="Điện thoại" placeholder="0901234567" v-model:value="phoneNumber"
+                    :is-error="isPhoneError" />
             </div>
         </div>
         <div class="row">
             <div class="col l-12 m-12 s-12">
                 <FormField type="text" title="Địa chỉ chi tiết (Tòa nhà, số nhà, tên đường, khu phố)"
-                    placeholder="Tòa nhà 90/5A Yên Thế" />
+                    placeholder="Tòa nhà 90/5A Yên Thế" v-model:value="addressLine" :is-error="isAddressError" />
             </div>
         </div>
         <div class="row">
@@ -50,31 +52,34 @@
 <script setup lang="ts">
 import FormField from "@/components/controls/FormField.vue"
 import { useAddressStore } from "@/stores/AddressData"
+import { useShippingStore } from "@/stores/ShippingData"
 import { storeToRefs } from "pinia";
-const store = useAddressStore()
-const { cities, districts, wards } = storeToRefs(store)
-console.log("List city: ", cities)
-console.log("List districts: ", districts)
-console.log("List wards: ", wards)
+const addrStore = useAddressStore()
+const { cities, districts, wards } = storeToRefs(addrStore)
+
+const shippingStore = useShippingStore()
+const { fullName, phoneNumber, addressLine, isNameError, isPhoneError, isAddressError } = storeToRefs(shippingStore)
+
+
 function onCityChange(event: Event) {
     const el = event.target as HTMLSelectElement
     console.log("[onCityChange] Select: ", el.value)
     const cityCode = parseInt(el.value)
-    store.setSelectedCity(cityCode)
+    addrStore.setSelectedCity(cityCode)
 }
 
 function onDistrictChange(event: Event) {
     const el = event.target as HTMLSelectElement
     console.log("[onDistrictChange] Select: ", el.value)
     const districtCode = parseInt(el.value)
-    store.setSelectedDistrict(districtCode)
+    addrStore.setSelectedDistrict(districtCode)
 }
 
 function onWardChange(event: Event) {
     const el = event.target as HTMLSelectElement
     console.log("[onWardChange] Select: ", el.value)
     const wardCode = parseInt(el.value)
-    store.setSelectedWard(wardCode)
+    addrStore.setSelectedWard(wardCode)
 }
 </script>
 
@@ -83,10 +88,10 @@ function onWardChange(event: Event) {
     margin: 5px 0;
 }
 
-.field-container select{
-width: 100%;
+.field-container select {
+    width: 100%;
 }
+
 .field-title {
     font-size: 1.6rem;
-}
-</style>
+}</style>

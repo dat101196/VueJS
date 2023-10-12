@@ -3,7 +3,7 @@
         <p class="field-title">{{ title }}</p>
         <input :type="type" :value="value"
             @input="$emit('update:value', $event.target ? ($event.target as HTMLInputElement).value : '')"
-            :placeholder="placeholder" />
+            :placeholder="placeholder" :class="{ 'field-error': isError }" />
     </div>
 </template>
 <script setup lang="ts">
@@ -12,6 +12,7 @@ export interface TextFieldProps {
     title?: string,
     value?: string,
     placeholder?: string,
+    isError?: boolean
 }
 
 withDefaults(defineProps<TextFieldProps>(), {
@@ -25,6 +26,10 @@ withDefaults(defineProps<TextFieldProps>(), {
 
 .field-title {
     font-size: 1.6rem;
+}
+
+.field-error {
+    border: 1px solid red;
 }
 
 input {

@@ -109,9 +109,9 @@ watch(qtyAddCart, (newVal) => {
     width: 20%;
     overflow: scroll;
     /* Hide scrollbar for IE, Edge and Firefox */
-    -ms-overflow-style: none;
+    /* -ms-overflow-style: none; */
     /* IE and Edge */
-    scrollbar-width: none;
+    /* scrollbar-width: none; */
     /* Firefox */
     margin-right: 10px;
 }

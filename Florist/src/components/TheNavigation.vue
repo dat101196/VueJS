@@ -4,11 +4,8 @@
             <div class="header-with-search">
                 <!-- <p>{{ router.currentRoute.value.name }}</p>
                 <p>{{ router.currentRoute.value.params }}</p> -->
-                <AppLink id="logo" to="/">
-                    <img id="logo-img" src="../assets/img/rose_logo.png" />
-                </AppLink>
-                <AppLink :to="{ name: 'shop' }">Shop</AppLink>
-                <AppLink :to="{ name: 'about' }">Về chúng tôi</AppLink>
+                <ShopLogo />
+
                 <!-- <AppLink v-for="des in destinations" :key="des.id"
                     :to="{ name: 'destination.show', params: { id: des.id, slug: des.slug }, query: {q1: 'test', q2: 123, q3: false} }">
                     {{ des.name }}
@@ -16,6 +13,8 @@
                 <AppLink to="https://google.com">Google</AppLink> -->
                 <!-- Search Input -->
                 <div class="header-right" v-if="!hideSearchBar">
+                    <AppLink :to="{ name: 'shop' }">Shop</AppLink>
+                    <AppLink :to="{ name: 'about' }">Về chúng tôi</AppLink>
                     <AppLink :to="{ name: 'demo-menu-page' }">Demo</AppLink>
 
                     <div class="header__search-bar">
@@ -38,6 +37,7 @@
 import { useRouter } from 'vue-router'
 import { watchEffect, ref } from 'vue'
 import CartHeader from '@/components/CartHeader.vue';
+import ShopLogo from './ShopLogo.vue';
 const hideSearchBar = ref<boolean>(false)
 const router = useRouter();
 watchEffect(() => {
@@ -64,6 +64,11 @@ watchEffect(() => {
     color: white;
     display: flex;
     align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    transition: transform 0.4s;
     z-index: 2;
     font-size: 1.4rem;
 }
@@ -75,12 +80,6 @@ watchEffect(() => {
     opacity: 1;
 }
 
-/* Logo */
-#logo,
-#logo-img {
-    width: 200px;
-}
-
 /* Header with search */
 .header-with-search {
     height: var(--header-with-search-height);
@@ -89,7 +88,7 @@ watchEffect(() => {
     justify-content: center;
 }
 
-.header-right{
+.header-right {
     display: flex;
     justify-content: flex-start;
     flex: 1;

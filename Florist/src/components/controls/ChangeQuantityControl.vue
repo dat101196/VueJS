@@ -36,25 +36,38 @@ watch(qtyValue, (newVal) => {
 .qty-control {
     display: flex;
     border: 1px solid var(--primary-color);
-    width: 130px
+    border-radius: var(--border-radius-default);
+    width: 130px;
+    overflow: hidden;
 }
 
 .qty-control__btn-inc,
 .qty-control__btn-dec {
     min-width: 30px;
-    width: 30px;
+    width: 34px;
     height: 34px;
     border: none;
     border-radius: 0;
+}
+
+.qty-control__btn-dec{
+    padding: 0 14px 0 10px;
+}
+
+.qty-control__btn-inc{
+    padding: 0 10px 0 14px;
 }
 
 .qty-control__select-qty {
     border-style: solid;
     border-color: var(--primary-color);
     border-width: 0 1px;
-    width: 68px;
+    width: 70px;
     height: 34px;
     text-align: center;
     outline: none;
+    margin-left: -4px;
+    margin-right: -4px;
+    z-index: 1;
 }
 </style>

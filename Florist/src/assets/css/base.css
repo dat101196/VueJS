@@ -31,8 +31,8 @@
   --border-color: #dbdbdb;
   --option-item-hover-color: #f3f3f3;
   --star-gold-color: #ffce3e;
-  --header-height: 150px;
-  --navbar-height: 34px;
+  --header-height: 100px;
+  --navbar-height: 0;
   --header-with-search-height: calc(var(--header-height) - var(--navbar-height));
   --header-search-bar-height: 40px;
   --box-shadow-default: 1px 2px 3px #c2c2c2;
@@ -79,9 +79,9 @@
   margin: 0;
   font-weight: normal;
   /* Hide scrollbar for IE, Edge and Firefox */
-  -ms-overflow-style: none;
+  /* -ms-overflow-style: none; */
   /* IE and Edge */
-  scrollbar-width: none;
+  /* scrollbar-width: none;11 */
   /* Firefox */
 }
 
@@ -126,7 +126,7 @@ p,
 pre,
 span,
 a {
-  font-size: 1.4rem;
+  font-size: 1.6rem;
 }
 
 pre {

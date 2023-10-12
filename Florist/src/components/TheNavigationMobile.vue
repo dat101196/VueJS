@@ -3,10 +3,8 @@
         <div id="nav">
             <div class="grid wide">
                 <div class="header-with-search">
-                    <i class="ti-menu" @click="onOpenSideMenu(true)"></i>
-                    <AppLink id="logo" to="/">
-                        <img id="logo-img" src="../assets/img/rose_logo.png" />
-                    </AppLink>
+                    <i class="ti-menu" @click="store.onOpenSideMenu(true)"></i>
+                    <ShopLogo />
                     <i class="ti-search" @click="onShowSearch"></i>
                     <CartHeader class="cart-header-moblie" />
                 </div>
@@ -26,25 +24,69 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import SideMenuWithFade from './menus/SideMenuWithFade.vue';
 import { useSideMenuStore } from '@/stores/SideMenuManager'
 import CartHeader from '@/components/CartHeader.vue';
+import ShopLogo from './ShopLogo.vue';
+import { storeToRefs } from 'pinia';
 const hideSearchBar = ref<boolean>(true)
 function onShowSearch() {
     hideSearchBar.value = !hideSearchBar.value;
 }
 
-const { onOpenSideMenu } = useSideMenuStore()
-// function onOpenMenu() {
-//     onOpenSideMenu(true)
-// }
+const store = useSideMenuStore()
+const { isOpenSideMenu } = storeToRefs(store)
+
+watch(isOpenSideMenu, (newVal) => {
+    console.log('isOpenSideMenu: ', newVal)
+    if (newVal) {
+        document.body.classList.add('menu-open')
+    } else {
+        document.body.classList.remove('menu-open')
+    }
+})
+
+// const body = document.body;
+// const scrollUp = "scroll-up";
+// const scrollDown = "scroll-down";
+// let lastScroll = 0;
+// window.addEventListener("scroll", () => {
+//     // console.log('[scroll] lastScroll: ', lastScroll)
+//     // console.log('[scroll] currentScroll: ', lastScroll)
+//     const currentScroll = window.pageYOffset;
+//     if (currentScroll <= 0) {
+//         body.classList.remove(scrollUp);
+//         return;
+//     }
+//     if (currentScroll > lastScroll && !body.classList.contains(scrollDown)) {
+//         // down 
+//         console.log("down")
+//         body.classList.remove(scrollUp);
+//         body.classList.add(scrollDown);
+//     } else if (
+//         currentScroll < lastScroll &&
+//         body.classList.contains(scrollDown)
+//     ) {
+//         // up 
+//         console.log("up")
+//         body.classList.remove(scrollDown);
+//         body.classList.add(scrollUp);
+//     }
+//     lastScroll = currentScroll;
+// });
 </script>
 
 <style scoped>
 /* Navigation */
 #nav-mobile {
     display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    transition: transform 0.4s;
+    z-index: 2;
 }
 
 #nav {
@@ -56,20 +98,15 @@ const { onOpenSideMenu } = useSideMenuStore()
     color: white;
     display: flex;
     align-items: center;
-    z-index: 2;
     font-size: 2rem;
+    height: var(--header-height);
+
 }
 
 #nav a {
     display: inline-block;
     color: white;
     opacity: 1;
-}
-
-/* Logo */
-#logo,
-#logo-img {
-    width: 200px;
 }
 
 /* Header with search */
@@ -145,6 +182,22 @@ const { onOpenSideMenu } = useSideMenuStore()
     font-size: 1.4rem;
     color: var(--white-color);
 }
+
+/* Scroll to hide/show nav */
+.scroll-down #nav-mobile {
+    transform: translate3d(0, -100%, 0);
+}
+
+.scroll-up #nav-mobile {
+    transform: none;
+}
+
+.scroll-up:not(.menu-open) #nav-mobile {
+    background: var(--lightpurple);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
+}
+
+/*  */
 
 @media(max-width: 768px) {
     #nav-mobile {

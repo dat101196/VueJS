@@ -69,6 +69,16 @@ export const useCartStore = defineStore(
       listCartItems.value = listItemsFiltered
       console.log('[removeFlowerFromCart] listCartItems: ', listCartItems)
     }
+
+    function clearSelectedItem() {
+      if (listSelectedItems.value) {
+        const listSelected = listSelectedItems.value
+        listSelected.forEach((item) => {
+          removeFlowerFromCart(item.flower.id)
+        })
+      }
+    }
+
     return {
       listCartItems,
       listSelectedItems,
@@ -79,7 +89,8 @@ export const useCartStore = defineStore(
       totalSelectedPrice,
       selectedAll,
       addFlowerToCart,
-      removeFlowerFromCart
+      removeFlowerFromCart,
+      clearSelectedItem
     }
   },
   {

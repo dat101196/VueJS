@@ -20,13 +20,11 @@ export const useAddressStore = defineStore('address', () => {
     selectedWard.value = undefined
   }
 
-  const districts = computed(() => {
-    if (selectedCity.value) {
-      return selectedCity.value.districts
-    } else {
-      return undefined
-    }
-  })
+  const districts = computed(() =>
+    selectedCity.value && selectedCity.value.districts
+      ? selectedCity.value.districts.sort((a, b) => a.name.localeCompare(b.name))
+      : undefined
+  )
 
   const selectedDistrict = ref<District>()
   function setSelectedDistrict(districtCode: number) {
@@ -35,7 +33,11 @@ export const useAddressStore = defineStore('address', () => {
     selectedDistrict.value = district
   }
 
-  const wards = computed(() => (selectedDistrict.value ? selectedDistrict.value.wards : undefined))
+  const wards = computed(() =>
+    selectedDistrict.value && selectedDistrict.value.wards
+      ? selectedDistrict.value.wards.sort((a, b) => a.name.localeCompare(b.name))
+      : undefined
+  )
   const selectedWard = ref<Ward>()
   function setSelectedWard(wardCode: number) {
     if (!wards.value) return
